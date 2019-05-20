@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wx.video.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.wx.video.entity.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <result column="uname" property="uname" jdbcType="VARCHAR" />
+    <result column="ugender" property="ugender" jdbcType="INTEGER" />
+    <result column="uaddress" property="uaddress" jdbcType="VARCHAR" />
+    <result column="ubalance" property="ubalance" jdbcType="VARCHAR" />
+    <result column="uavatar" property="uavatar" jdbcType="VARCHAR" />
+    <result column="skey" property="skey" jdbcType="VARCHAR" />
+    <result column="sessionkey" property="sessionkey" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, uid, uname, ugender, uaddress, ubalance, uavatar, skey, sessionkey, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wx.video.entity.User" >
+    insert into user (id, uid, uname, 
+      ugender, uaddress, ubalance, 
+      uavatar, skey, sessionkey, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, 
+      #{ugender,jdbcType=INTEGER}, #{uaddress,jdbcType=VARCHAR}, #{ubalance,jdbcType=VARCHAR}, 
+      #{uavatar,jdbcType=VARCHAR}, #{skey,jdbcType=VARCHAR}, #{sessionkey,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wx.video.entity.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="uname != null" >
+        uname,
+      </if>
+      <if test="ugender != null" >
+        ugender,
+      </if>
+      <if test="uaddress != null" >
+        uaddress,
+      </if>
+      <if test="ubalance != null" >
+        ubalance,
+      </if>
+      <if test="uavatar != null" >
+        uavatar,
+      </if>
+      <if test="skey != null" >
+        skey,
+      </if>
+      <if test="sessionkey != null" >
+        sessionkey,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="uname != null" >
+        #{uname,jdbcType=VARCHAR},
+      </if>
+      <if test="ugender != null" >
+        #{ugender,jdbcType=INTEGER},
+      </if>
+      <if test="uaddress != null" >
+        #{uaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ubalance != null" >
+        #{ubalance,jdbcType=VARCHAR},
+      </if>
+      <if test="uavatar != null" >
+        #{uavatar,jdbcType=VARCHAR},
+      </if>
+      <if test="skey != null" >
+        #{skey,jdbcType=VARCHAR},
+      </if>
+      <if test="sessionkey != null" >
+        #{sessionkey,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wx.video.entity.User" >
+    update user
+    <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=VARCHAR},
+      </if>
+      <if test="uname != null" >
+        uname = #{uname,jdbcType=VARCHAR},
+      </if>
+      <if test="ugender != null" >
+        ugender = #{ugender,jdbcType=INTEGER},
+      </if>
+      <if test="uaddress != null" >
+        uaddress = #{uaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="ubalance != null" >
+        ubalance = #{ubalance,jdbcType=VARCHAR},
+      </if>
+      <if test="uavatar != null" >
+        uavatar = #{uavatar,jdbcType=VARCHAR},
+      </if>
+      <if test="skey != null" >
+        skey = #{skey,jdbcType=VARCHAR},
+      </if>
+      <if test="sessionkey != null" >
+        sessionkey = #{sessionkey,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wx.video.entity.User" >
+    update user
+    set uid = #{uid,jdbcType=VARCHAR},
+      uname = #{uname,jdbcType=VARCHAR},
+      ugender = #{ugender,jdbcType=INTEGER},
+      uaddress = #{uaddress,jdbcType=VARCHAR},
+      ubalance = #{ubalance,jdbcType=VARCHAR},
+      uavatar = #{uavatar,jdbcType=VARCHAR},
+      skey = #{skey,jdbcType=VARCHAR},
+      sessionkey = #{sessionkey,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
