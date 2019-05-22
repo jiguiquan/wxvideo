@@ -17,6 +17,39 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return userMapper.selectByPrimaryKey(id);
 	}
+
+	/**
+	 * 
+	 * @param open_id
+	 * @return
+	 */
+	@Override
+	public User selectByOpenId(String open_id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * 
+	 * @param user
+	 * @return
+	 */
+	@Override
+	public int update(User user) {
+		// TODO Auto-generated method stub
+		return userMapper.updateByPrimaryKeySelective(user);
+	}
+
+	/**
+	 * 
+	 * @param newUser
+	 * @return
+	 */
+	@Override
+	public int insert(User newUser) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 }
