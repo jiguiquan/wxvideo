@@ -26,7 +26,18 @@ public class UserController {
 	@Autowired
     private UserService userService;
 
-
+	@RequestMapping("/{id}")
+	@ResponseBody
+	public JsonResult get(@PathVariable("id") Integer id) {
+		System.out.println(id);
+		User user = new User();
+		user.setId(1);
+		user.setUname("吉桂权");
+		
+		return JsonResult.successs(user);
+	}
+	
+	
     @PostMapping("/login")
     public JsonResult user_login(
             @RequestParam("code") String code,

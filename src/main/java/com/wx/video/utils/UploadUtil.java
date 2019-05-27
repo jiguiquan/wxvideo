@@ -25,7 +25,6 @@ public class UploadUtil {
 	@RequestMapping("/uploadFile")
 	public String uploadFile(MultipartFile upfile) {
 		//检验路径是否存在和是否为文件夹
-		System.out.println(basePath);
 		
 		File uploadPath = new File(basePath);
 		if (!uploadPath.exists() || !uploadPath.isDirectory()) {

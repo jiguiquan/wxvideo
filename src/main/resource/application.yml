@@ -3,11 +3,17 @@ server:
   servlet:
     context-path: /wxvideo
     session:
-      timeout: 1800
+      timeout: 1800    
       
 spring: 
   application: 
     name: wxvideo
+  
+  servlet:
+    multipart:
+       enabled: true
+       max-file-size: 20MB
+       max-request-size: 200MB
     
   session:
     store-type: REDIS
@@ -38,6 +44,7 @@ spring:
     redis:
         host: localhost
         port: 6379
+        
       
 mybatis: 
   mapper-locations: classpath*:mapper/*.xml
