@@ -6,12 +6,16 @@ import com.wx.video.entity.Image;
 
 public interface ImageService {
 
-	Image findById(Integer id);
+	int save(Image model);
 
-	int delete(Integer id);
+	Image findById(Integer imgId);
+
+	int delete(Integer imgId);
 
 	int update(Image model);
 
 	List<Image> findAll();
+
+	List<Image> findCarousels();
 
 }

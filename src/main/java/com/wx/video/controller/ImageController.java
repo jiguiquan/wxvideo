@@ -26,7 +26,7 @@ import com.wx.video.utils.UploadUtil;
 @CrossOrigin
 @RequestMapping("/image")
 public class ImageController {
-private final static Logger logger = LoggerFactory.getLogger(ImageController.class);
+	private final static Logger logger = LoggerFactory.getLogger(ImageController.class);
     
     @Autowired
     private ImageService imageService;
@@ -37,38 +37,37 @@ private final static Logger logger = LoggerFactory.getLogger(ImageController.cla
     @ResponseBody
     @RequestMapping(value = {"/save", "/insert"}, produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
     public JsonResult save(@RequestBody @Validated Image model) {
-//        logger.info("新增留言");
-//        System.out.println(model);
-//        try {
-//            imageService.save(model);
-//        } catch (Exception e) {
-//            logger.error("留言保存失败！", e);
-//            return JsonResult.error("留言保存失败！");
-//        }
-//
-//        
+        logger.info("新增图片");
+        System.out.println(model);
+        try {
+            imageService.save(model);
+        } catch (Exception e) {
+            logger.error("图片保存失败！", e);
+            return JsonResult.error("图片保存失败！");
+        }
+
         return JsonResult.successs();
     }
 
     @ResponseBody
     @RequestMapping(value = "/delete/{id}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
     public JsonResult delete(@PathVariable("id") Integer id) {
-        logger.info("删除留言，ID:{}", id);
+        logger.info("删除图片，ID:{}", id);
         System.out.println(id);
         if (id == null) {
-            return JsonResult.failure("留言ID不可为空！");
+            return JsonResult.failure("图片ID不可为空！");
         }
 
         try {
         	Image record = imageService.findById(id);
 	        if (record == null) {
-	            return JsonResult.error("留言不存在，无法删除！");
+	            return JsonResult.error("图片不存在，无法删除！");
 	        } else {
 	            imageService.delete(id);
 	        }
         } catch (Exception e) {
-            logger.error("留言删除失败！", e);
-            return JsonResult.error("留言删除失败！");
+            logger.error("图片删除失败！", e);
+            return JsonResult.error("图片删除失败！");
         }
 
         return JsonResult.successs();
@@ -77,18 +76,18 @@ private final static Logger logger = LoggerFactory.getLogger(ImageController.cla
     @ResponseBody
     @RequestMapping(value = "/update", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
     public JsonResult update(@RequestBody @Validated Image model) {
-        logger.info("更新留言，ID:{}", model.getImgId());
+        logger.info("更新图片，ID:{}", model.getImgId());
         System.out.println(model);
         try {
         	Image record = imageService.findById(model.getImgId());
 	        if (record == null) {
-	            return JsonResult.error("留言不存在，无法更新！");
+	            return JsonResult.error("图片不存在，无法更新！");
 	        } else {
 	           imageService.update(model);
 	        }
         } catch (Exception e) {
-            logger.error("留言更新失败！", e);
-            return JsonResult.error("留言更新失败！");
+            logger.error("图片更新失败！", e);
+            return JsonResult.error("图片更新失败！");
         }
 
         return JsonResult.successs();
@@ -97,30 +96,30 @@ private final static Logger logger = LoggerFactory.getLogger(ImageController.cla
     @ResponseBody
     @RequestMapping(value = "/{id}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.GET)
     public JsonResult get(@PathVariable("id") Integer id) {
-        logger.info("查询留言，ID:{}", id);
+        logger.info("查询图片，ID:{}", id);
 
         Image result = null;
         try {
             result = imageService.findById(id);
         } catch (Exception e) {
-            logger.error("查询留言信息失败！", e);
-            return JsonResult.error("查询留言信息失败！");
+            logger.error("查询图片信息失败！", e);
+            return JsonResult.error("查询图片信息失败！");
         }
 
         return JsonResult.successs(result);
     }
     
     @ResponseBody
-    @RequestMapping(value = {"/findAll", "/getAll"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public JsonResult findAll() {
-        logger.info("查询全部留言信息");
+    @RequestMapping(value = {"/findCarousels", "/getCarousels"}, produces = MediaType.APPLICATION_JSON_VALUE)
+    public JsonResult findCarousels() {
+        logger.info("查询全部轮播图信息");
 
         List<Image> resultList = null;
         try {
-            resultList = imageService.findAll();
+            resultList = imageService.findCarousels();
         } catch (Exception e) {
-            logger.error("查询留言信息失败！", e);
-            return JsonResult.error("查询留言信息失败！");
+            logger.error("查询图片信息失败！", e);
+            return JsonResult.error("查询图片信息失败！");
         }
         
         return JsonResult.successs(resultList);
@@ -128,8 +127,38 @@ private final static Logger logger = LoggerFactory.getLogger(ImageController.cla
     
     
     @ResponseBody
+    @RequestMapping(value = "/uploadCarousel")
+    public JsonResult uploadCarousel(@RequestParam("carousel") MultipartFile carousel) {
+    	String url = uploadUtil.uploadFile(carousel);
+    	
+    	Image image = new Image();
+    	image.setImgUrl(url);
+    	image.setRemark("carousel");
+    	
+    	imageService.save(image);
+		
+    	Integer newId = image.getImgId();
+    	
+    	Image result = imageService.findById(newId);
+    	
+    	return JsonResult.successs(result);
+    }
+    
+    
+    @ResponseBody
     @RequestMapping(value = "/uploadImage")
-    public String uploadImage(@RequestParam("upfile") MultipartFile upfile) {
-    	return uploadUtil.uploadFile(upfile);
+    public JsonResult uploadImage(@RequestParam("upfile") MultipartFile upfile) {
+    	String url = uploadUtil.uploadFile(upfile);
+    	
+    	Image image = new Image();
+    	image.setImgId(1);
+    	image.setImgUrl(url);
+    	int count = imageService.update(image);
+    	
+    	if (count > 0) {
+			return JsonResult.successs(url);
+		}
+    	
+    	return JsonResult.error("图片保存失败");
     }
 }

@@ -62,4 +62,4 @@ logging:
   
 upload: 
   basePath: E:\nginx\html\upload
-  urlPrefix: http://169.254.249.197/upload/
+  urlPrefix: http://192.168.0.104/upload/

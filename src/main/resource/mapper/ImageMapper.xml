@@ -21,7 +21,7 @@
     delete from image
     where img_id = #{imgId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wx.video.entity.Image" >
+  <insert id="insert" parameterType="com.wx.video.entity.Image" useGeneratedKeys="true" keyProperty="imgId">
     insert into image (img_id, img_name, img_url, 
       img_size, remark)
     values (#{imgId,jdbcType=INTEGER}, #{imgName,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, 
@@ -90,4 +90,12 @@
       remark = #{remark,jdbcType=VARCHAR}
     where img_id = #{imgId,jdbcType=INTEGER}
   </update>
+  
+  <select id="findCarousels" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from image
+    where remark = "carousel"
+    order by img_id asc
+  </select>
 </mapper>

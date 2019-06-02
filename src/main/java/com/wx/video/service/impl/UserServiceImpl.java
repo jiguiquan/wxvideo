@@ -50,6 +50,12 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public User findUserByLoginName(String loginName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

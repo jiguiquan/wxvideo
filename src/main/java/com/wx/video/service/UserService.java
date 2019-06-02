@@ -21,4 +21,6 @@ public interface UserService {
 	 * @return
 	 */
 	int insert(User newUser);
+
+	User findUserByLoginName(String loginName);
 }

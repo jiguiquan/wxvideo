@@ -1,5 +1,7 @@
 package com.wx.video.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.wx.video.entity.Image;
@@ -17,4 +19,6 @@ public interface ImageMapper {
     int updateByPrimaryKeySelective(Image record);
 
     int updateByPrimaryKey(Image record);
+
+	List<Image> findCarousels();
 }

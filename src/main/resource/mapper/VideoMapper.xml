@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wx.video.dao.VideoMapper" >
+  <resultMap id="BaseResultMap" type="com.wx.video.entity.Video" >
+    <id column="vid" property="vid" jdbcType="INTEGER" />
+    <result column="vtitle" property="vtitle" jdbcType="VARCHAR" />
+    <result column="vauthor" property="vauthor" jdbcType="VARCHAR" />
+    <result column="vsummary" property="vsummary" jdbcType="VARCHAR" />
+    <result column="vurl" property="vurl" jdbcType="VARCHAR" />
+    <result column="vprice" property="vprice" jdbcType="DOUBLE" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="filter_a" property="filterA" jdbcType="VARCHAR" />
+    <result column="filter_b" property="filterB" jdbcType="VARCHAR" />
+    <result column="filter_c" property="filterC" jdbcType="VARCHAR" />
+    <result column="filter_d" property="filterD" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    vid, vtitle, vauthor, vsummary, vurl, vprice, create_time, remark, filter_a, filter_b, 
+    filter_c, filter_d
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from video
+    where vid = #{vid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from video
+    where vid = #{vid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wx.video.entity.Video" >
+    insert into video (vid, vtitle, vauthor, 
+      vsummary, vurl, vprice, 
+      create_time, remark, filter_a, 
+      filter_b, filter_c, filter_d
+      )
+    values (#{vid,jdbcType=INTEGER}, #{vtitle,jdbcType=VARCHAR}, #{vauthor,jdbcType=VARCHAR}, 
+      #{vsummary,jdbcType=VARCHAR}, #{vurl,jdbcType=VARCHAR}, #{vprice,jdbcType=DOUBLE}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{filterA,jdbcType=VARCHAR}, 
+      #{filterB,jdbcType=VARCHAR}, #{filterC,jdbcType=VARCHAR}, #{filterD,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wx.video.entity.Video" >
+    insert into video
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="vid != null" >
+        vid,
+      </if>
+      <if test="vtitle != null" >
+        vtitle,
+      </if>
+      <if test="vauthor != null" >
+        vauthor,
+      </if>
+      <if test="vsummary != null" >
+        vsummary,
+      </if>
+      <if test="vurl != null" >
+        vurl,
+      </if>
+      <if test="vprice != null" >
+        vprice,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="filterA != null" >
+        filter_a,
+      </if>
+      <if test="filterB != null" >
+        filter_b,
+      </if>
+      <if test="filterC != null" >
+        filter_c,
+      </if>
+      <if test="filterD != null" >
+        filter_d,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="vid != null" >
+        #{vid,jdbcType=INTEGER},
+      </if>
+      <if test="vtitle != null" >
+        #{vtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="vauthor != null" >
+        #{vauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="vsummary != null" >
+        #{vsummary,jdbcType=VARCHAR},
+      </if>
+      <if test="vurl != null" >
+        #{vurl,jdbcType=VARCHAR},
+      </if>
+      <if test="vprice != null" >
+        #{vprice,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="filterA != null" >
+        #{filterA,jdbcType=VARCHAR},
+      </if>
+      <if test="filterB != null" >
+        #{filterB,jdbcType=VARCHAR},
+      </if>
+      <if test="filterC != null" >
+        #{filterC,jdbcType=VARCHAR},
+      </if>
+      <if test="filterD != null" >
+        #{filterD,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wx.video.entity.Video" >
+    update video
+    <set >
+      <if test="vtitle != null" >
+        vtitle = #{vtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="vauthor != null" >
+        vauthor = #{vauthor,jdbcType=VARCHAR},
+      </if>
+      <if test="vsummary != null" >
+        vsummary = #{vsummary,jdbcType=VARCHAR},
+      </if>
+      <if test="vurl != null" >
+        vurl = #{vurl,jdbcType=VARCHAR},
+      </if>
+      <if test="vprice != null" >
+        vprice = #{vprice,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="filterA != null" >
+        filter_a = #{filterA,jdbcType=VARCHAR},
+      </if>
+      <if test="filterB != null" >
+        filter_b = #{filterB,jdbcType=VARCHAR},
+      </if>
+      <if test="filterC != null" >
+        filter_c = #{filterC,jdbcType=VARCHAR},
+      </if>
+      <if test="filterD != null" >
+        filter_d = #{filterD,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where vid = #{vid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wx.video.entity.Video" >
+    update video
+    set vtitle = #{vtitle,jdbcType=VARCHAR},
+      vauthor = #{vauthor,jdbcType=VARCHAR},
+      vsummary = #{vsummary,jdbcType=VARCHAR},
+      vurl = #{vurl,jdbcType=VARCHAR},
+      vprice = #{vprice,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      filter_a = #{filterA,jdbcType=VARCHAR},
+      filter_b = #{filterB,jdbcType=VARCHAR},
+      filter_c = #{filterC,jdbcType=VARCHAR},
+      filter_d = #{filterD,jdbcType=VARCHAR}
+    where vid = #{vid,jdbcType=INTEGER}
+  </update>
+</mapper>
