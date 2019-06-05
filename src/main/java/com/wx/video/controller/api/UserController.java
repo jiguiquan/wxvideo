@@ -1,4 +1,4 @@
-package com.wx.video.controller;
+package com.wx.video.controller.api;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -21,7 +21,7 @@ import com.wx.video.service.UserService;
 import com.wx.video.utils.HttpClientUtil;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 	@Autowired
     private UserService userService;

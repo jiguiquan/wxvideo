@@ -1,4 +1,4 @@
-package com.wx.video.controller;
+package com.wx.video.controller.admin;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ import com.wx.video.utils.UploadUtil;
 
 @Controller
 @CrossOrigin
-@RequestMapping("/image")
+@RequestMapping("/admin/image")
 public class ImageController {
 	private final static Logger logger = LoggerFactory.getLogger(ImageController.class);
     
