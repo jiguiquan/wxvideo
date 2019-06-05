@@ -2,13 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wx.video.dao.VideoMapper" >
   <resultMap id="BaseResultMap" type="com.wx.video.entity.Video" >
-    <id column="vid" property="vid" jdbcType="INTEGER" />
+    <id column="vid" property="vid" jdbcType="VARCHAR" />
     <result column="vtitle" property="vtitle" jdbcType="VARCHAR" />
     <result column="vauthor" property="vauthor" jdbcType="VARCHAR" />
     <result column="vsummary" property="vsummary" jdbcType="VARCHAR" />
     <result column="vurl" property="vurl" jdbcType="VARCHAR" />
     <result column="vprice" property="vprice" jdbcType="DOUBLE" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="heat" property="heat" jdbcType="INTEGER" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="filter_a" property="filterA" jdbcType="VARCHAR" />
     <result column="filter_b" property="filterB" jdbcType="VARCHAR" />
@@ -16,30 +17,30 @@
     <result column="filter_d" property="filterD" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    vid, vtitle, vauthor, vsummary, vurl, vprice, create_time, remark, filter_a, filter_b, 
-    filter_c, filter_d
+    vid, vtitle, vauthor, vsummary, vurl, vprice, create_time, heat, remark, filter_a, 
+    filter_b, filter_c, filter_d
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
     <include refid="Base_Column_List" />
     from video
-    where vid = #{vid,jdbcType=INTEGER}
+    where vid = #{vid,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from video
-    where vid = #{vid,jdbcType=INTEGER}
+    where vid = #{vid,jdbcType=VARCHAR}
   </delete>
   <insert id="insert" parameterType="com.wx.video.entity.Video" >
     insert into video (vid, vtitle, vauthor, 
       vsummary, vurl, vprice, 
-      create_time, remark, filter_a, 
-      filter_b, filter_c, filter_d
-      )
-    values (#{vid,jdbcType=INTEGER}, #{vtitle,jdbcType=VARCHAR}, #{vauthor,jdbcType=VARCHAR}, 
+      create_time, heat, remark, 
+      filter_a, filter_b, filter_c, 
+      filter_d)
+    values (#{vid,jdbcType=VARCHAR}, #{vtitle,jdbcType=VARCHAR}, #{vauthor,jdbcType=VARCHAR}, 
       #{vsummary,jdbcType=VARCHAR}, #{vurl,jdbcType=VARCHAR}, #{vprice,jdbcType=DOUBLE}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, #{filterA,jdbcType=VARCHAR}, 
-      #{filterB,jdbcType=VARCHAR}, #{filterC,jdbcType=VARCHAR}, #{filterD,jdbcType=VARCHAR}
-      )
+      #{createTime,jdbcType=TIMESTAMP}, #{heat,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
+      #{filterA,jdbcType=VARCHAR}, #{filterB,jdbcType=VARCHAR}, #{filterC,jdbcType=VARCHAR}, 
+      #{filterD,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wx.video.entity.Video" >
     insert into video
@@ -65,6 +66,9 @@
       <if test="createTime != null" >
         create_time,
       </if>
+      <if test="heat != null" >
+        heat,
+      </if>
       <if test="remark != null" >
         remark,
       </if>
@@ -83,7 +87,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="vid != null" >
-        #{vid,jdbcType=INTEGER},
+        #{vid,jdbcType=VARCHAR},
       </if>
       <if test="vtitle != null" >
         #{vtitle,jdbcType=VARCHAR},
@@ -102,6 +106,9 @@
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="heat != null" >
+        #{heat,jdbcType=INTEGER},
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
@@ -141,6 +148,9 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="heat != null" >
+        heat = #{heat,jdbcType=INTEGER},
+      </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
       </if>
@@ -157,7 +167,7 @@
         filter_d = #{filterD,jdbcType=VARCHAR},
       </if>
     </set>
-    where vid = #{vid,jdbcType=INTEGER}
+    where vid = #{vid,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wx.video.entity.Video" >
     update video
@@ -167,11 +177,64 @@
       vurl = #{vurl,jdbcType=VARCHAR},
       vprice = #{vprice,jdbcType=DOUBLE},
       create_time = #{createTime,jdbcType=TIMESTAMP},
+      heat = #{heat,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},
       filter_a = #{filterA,jdbcType=VARCHAR},
       filter_b = #{filterB,jdbcType=VARCHAR},
       filter_c = #{filterC,jdbcType=VARCHAR},
       filter_d = #{filterD,jdbcType=VARCHAR}
-    where vid = #{vid,jdbcType=INTEGER}
+    where vid = #{vid,jdbcType=VARCHAR}
   </update>
+  
+  <select id="findVideoPage" parameterType="com.wx.video.model.VideoPageVo" resultType="com.wx.video.dto.VideoDTO">
+    select 
+      vid, vtitle, vauthor, vsummary, vurl, vprice, create_time as createTime, 
+      heat, remark, filter_a as filterA, filter_b as filterB, 
+      filter_c as filterC, filter_d as filterD
+    from video
+    <where>
+      <if test="vtitle != null and vtitle != ''">
+        and vtitle like CONCAT(CONCAT('%', #{vtitle}),'%')
+      </if>
+      <if test="filterA != null and filterA != ''">
+      	and filter_a = #{filterA}
+      </if>
+      <if test="filterB != null and filterB != ''">
+      	and filter_b = #{filterB}
+      </if>
+      <if test="filterC != null and filterC != ''">
+      	and filter_c = #{filterC}
+      </if>
+      <if test="filterD != null and filterD != ''">
+      	and filter_d = #{filterD}
+      </if>
+    </where>
+    order by create_time desc
+  </select>
+  
+  <select id="findAll" parameterType="com.wx.video.model.VideoVo" resultType="com.wx.video.dto.VideoDTO">
+  	select 
+      vid, vtitle, vauthor, vsummary, vurl, vprice, create_time as createTime, 
+      heat, remark, filter_a as filterA, filter_b as filterB, 
+      filter_c as filterC, filter_d as filterD
+    from video
+    <where>
+      <if test="vtitle != null and vtitle != ''">
+        and vtitle like CONCAT(CONCAT('%', #{vtitle}),'%')
+      </if>
+      <if test="filterA != null and filterA != ''">
+      	and filter_a = #{filterA}
+      </if>
+      <if test="filterB != null and filterB != ''">
+      	and filter_b = #{filterB}
+      </if>
+      <if test="filterC != null and filterC != ''">
+      	and filter_c = #{filterC}
+      </if>
+      <if test="filterD != null and filterD != ''">
+      	and filter_d = #{filterD}
+      </if>
+    </where>
+    order by create_time desc
+  </select>
 </mapper>

@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.wx.video.dao.VideoMapper;
+import com.wx.video.dto.VideoDTO;
 import com.wx.video.entity.Video;
+import com.wx.video.model.VideoPageVo;
+import com.wx.video.model.VideoVo;
 import com.wx.video.service.VideoService;
 @Service
 public class VideoServiceImpl implements VideoService {
@@ -14,33 +17,37 @@ public class VideoServiceImpl implements VideoService {
 	private VideoMapper videoMapper;
 
 	@Override
-	public void save(Video model) {
-		// TODO Auto-generated method stub
-		
+	public int save(Video record) {
+		return videoMapper.insertSelective(record);
 	}
 
 	@Override
-	public Video findById(Integer vid) {
+	public Video findById(String vid) {
 		// TODO Auto-generated method stub
 		return videoMapper.selectByPrimaryKey(vid);
 	}
 
 	@Override
-	public void delete(Integer vid) {
+	public void delete(String vid) {
+		videoMapper.deleteByPrimaryKey(vid);
+	}
+
+	@Override
+	public void update(Video record) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void update(Video model) {
+	public List<VideoDTO> findAll(VideoVo videoVo) {
 		// TODO Auto-generated method stub
-		
+		return videoMapper.findAll(videoVo);
 	}
 
 	@Override
-	public List<Video> findAll() {
+	public List<VideoDTO> findVideoPage(VideoPageVo pageable) {
 		// TODO Auto-generated method stub
-		return null;
+		return videoMapper.findVideoPage(pageable);
 	}
 
 }

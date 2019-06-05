@@ -2,18 +2,23 @@ package com.wx.video.service;
 
 import java.util.List;
 
+import com.wx.video.dto.VideoDTO;
 import com.wx.video.entity.Video;
+import com.wx.video.model.VideoPageVo;
+import com.wx.video.model.VideoVo;
 
 public interface VideoService {
 
-	void save(Video model);
+	int save(Video record);
 
-	Video findById(Integer vid);
+	Video findById(String vid);
 
-	void delete(Integer vid);
+	void delete(String vid);
 
-	void update(Video model);
+	void update(Video record);
 
-	List<Video> findAll();
+	List<VideoDTO> findAll(VideoVo videoVo);
+	
+	List<VideoDTO> findVideoPage(VideoPageVo pageable);
 
 }

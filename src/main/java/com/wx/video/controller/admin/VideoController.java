@@ -1,11 +1,12 @@
 package com.wx.video.controller.admin;
 
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,8 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.wx.video.common.JsonResult;
+import com.wx.video.dto.VideoDTO;
 import com.wx.video.entity.Video;
+import com.wx.video.model.VideoPageVo;
+import com.wx.video.model.VideoVo;
 import com.wx.video.service.VideoService;
 import com.wx.video.utils.UploadUtil;
 
@@ -38,40 +44,44 @@ public class VideoController {
     @RequestMapping(value = {"/save", "/insert"}, produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
     public JsonResult save(@RequestBody @Validated Video model) {
         logger.info("新增视频");
-        System.out.println(model);
+    	if (StringUtils.isBlank(model.getVid())) {
+			return JsonResult.error("vid不可为空");
+		}
+    	
+    	model.setCreateTime(new Date());
+        
         try {
             videoService.save(model);
         } catch (Exception e) {
-            logger.error("视频保存失败！", e);
-            return JsonResult.error("视频保存失败！");
+            logger.error("视频信息保存失败！", e);
+            return JsonResult.error("视频信息保存失败！");
         }
 
         
-        return JsonResult.successs();
+        return JsonResult.successs("添加视频成功");
     }
 
     @ResponseBody
-    @RequestMapping(value = "/delete/{id}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
-    public JsonResult delete(@PathVariable("id") Integer id) {
-        logger.info("删除视频，ID:{}", id);
-        System.out.println(id);
-        if (id == null) {
+    @RequestMapping(value = "/delete/{vid}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
+    public JsonResult delete(@PathVariable("vid") String vid) {
+        logger.info("删除视频，ID:{}", vid);
+        System.out.println(vid);
+        if (vid == null) {
             return JsonResult.failure("视频ID不可为空！");
         }
+        
+        Video record = videoService.findById(vid);
+        if (record == null) {
+        	return JsonResult.error("视频不存在，无法删除！");
+		}
 
         try {
-        	Video record = videoService.findById(id);
-	        if (record == null) {
-	            return JsonResult.error("视频不存在，无法删除！");
-	        } else {
-	            videoService.delete(id);
-	        }
+	            videoService.delete(vid);
+	            return JsonResult.successs("视频删除成功");
         } catch (Exception e) {
             logger.error("视频删除失败！", e);
             return JsonResult.error("视频删除失败！");
-        }
-
-        return JsonResult.successs();
+        } 
     }
 
     @ResponseBody
@@ -79,29 +89,29 @@ public class VideoController {
     public JsonResult update(@RequestBody @Validated Video model) {
         logger.info("更新视频，ID:{}", model.getVid());
         System.out.println(model);
+        
+        Video record = videoService.findById(model.getVid());
+        if (record == null) {
+			return JsonResult.error("视频不存在");
+		}
+        
         try {
-        	Video record = videoService.findById(model.getVid());
-	        if (record == null) {
-	            return JsonResult.error("视频不存在，无法更新！");
-	        } else {
-	           videoService.update(model);
-	        }
+	        videoService.update(model);
+	        return JsonResult.successs("视频信息更新成功");
         } catch (Exception e) {
             logger.error("视频更新失败！", e);
             return JsonResult.error("视频更新失败！");
         }
-
-        return JsonResult.successs();
     }
 
     @ResponseBody
-    @RequestMapping(value = "/{id}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.GET)
-    public JsonResult get(@PathVariable("id") Integer id) {
-        logger.info("查询视频，ID:{}", id);
+    @RequestMapping(value = "/{vid}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.GET)
+    public JsonResult get(@PathVariable("vid") String vid) {
+        logger.info("查询视频，ID:{}", vid);
 
         Video result = null;
         try {
-            result = videoService.findById(id);
+            result = videoService.findById(vid);
         } catch (Exception e) {
             logger.error("查询视频信息失败！", e);
             return JsonResult.error("查询视频信息失败！");
@@ -111,13 +121,39 @@ public class VideoController {
     }
     
     @ResponseBody
-    @RequestMapping(value = {"/findAll", "/getAll"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public JsonResult findAll() {
+    @RequestMapping(value = {"/findPage", "/getPage"}, produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
+    public JsonResult findPage(@RequestBody VideoPageVo pageable) {
+    	//如果分页信息不存在，给设置个默认值
+    	if (pageable.getPageSize() == null) {
+			pageable.setPageSize(10);
+		}
+    	if (pageable.getPageNum() == null) {
+			pageable.setPageNum(1);
+		}
+    	logger.info("查询视频分页列表, pageNum:{}, pageSize:{}", pageable.getPageNum(), pageable.getPageSize());
+    	
+    	List<VideoDTO> result = null;
+        PageHelper.startPage(pageable);
+        
+        try {
+            result = videoService.findVideoPage(pageable);
+        } catch (Exception e) {
+            logger.error("查询用户分页列表失败！", e);
+            return JsonResult.error("查询用户分页列表失败！");
+        }
+        
+        PageInfo<VideoDTO> resultPage = new PageInfo<>(result);
+    	return JsonResult.successs(resultPage);
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = {"/findAll", "/getAll"}, produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
+    public JsonResult findAll(@RequestBody VideoVo videoVo) {
         logger.info("查询全部视频信息");
 
-        List<Video> resultList = null;
+        List<VideoDTO> resultList = null;
         try {
-            resultList = videoService.findAll();
+            resultList = videoService.findAll(videoVo);
         } catch (Exception e) {
             logger.error("查询视频信息失败！", e);
             return JsonResult.error("查询视频信息失败！");

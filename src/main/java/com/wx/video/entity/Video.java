@@ -3,7 +3,7 @@ package com.wx.video.entity;
 import java.util.Date;
 
 public class Video {
-    private Integer vid;
+    private String vid;
 
     private String vtitle;
 
@@ -17,6 +17,8 @@ public class Video {
 
     private Date createTime;
 
+    private Integer heat;
+
     private String remark;
 
     private String filterA;
@@ -27,11 +29,11 @@ public class Video {
 
     private String filterD;
 
-    public Integer getVid() {
+    public String getVid() {
         return vid;
     }
 
-    public void setVid(Integer vid) {
+    public void setVid(String vid) {
         this.vid = vid;
     }
 
@@ -81,6 +83,14 @@ public class Video {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Integer getHeat() {
+        return heat;
+    }
+
+    public void setHeat(Integer heat) {
+        this.heat = heat;
     }
 
     public String getRemark() {
