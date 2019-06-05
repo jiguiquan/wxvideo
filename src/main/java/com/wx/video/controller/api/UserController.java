@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,26 +20,26 @@ import com.wx.video.common.JsonResult;
 import com.wx.video.entity.User;
 import com.wx.video.service.UserService;
 import com.wx.video.utils.HttpClientUtil;
+import com.wx.video.utils.JwtUtils;
+import com.wx.video.utils.RedisOperator;
+import com.wx.video.utils.UserClaims;
+
+import ch.qos.logback.core.subst.Token;
 
 @Controller
 @RequestMapping("/api/user")
 public class UserController {
 	@Autowired
     private UserService userService;
-
-	@RequestMapping("/{id}")
-	@ResponseBody
-	public JsonResult get(@PathVariable("id") Integer id) {
-		System.out.println(id);
-		User user = new User();
-		user.setId(1);
-		user.setUname("吉桂权");
-		
-		return JsonResult.successs(user);
-	}
+	@Autowired
+	private JwtUtils jwtUtils;
+	@Autowired
+	private RedisOperator redis;
 	
+	@Value("${auth.timeout}")
+	private int timeout;
 	
-    @PostMapping("/login")
+    @PostMapping("/wxlogin")
     public JsonResult user_login(
             @RequestParam("code") String code,
             @RequestParam("userHead") String userHead,
@@ -63,12 +64,15 @@ public class UserController {
         // 根据返回的user实体类，判断用户是否是新用户，不是的话，更新最新登录时间，是的话，将用户信息存到数据库
         User user = userService.selectByOpenId(openid);
         if(user != null){
-            user.setUpdateTime(new Date());
+            user.setSessionkey(sessionkey);  //修改sessionKey
+            user.setUpdateTime(new Date());  //修改更新时间
+
             userService.update(user);
         }else{
             User newUser = new User();
             newUser.setUid(openid);
             newUser.setSessionkey(sessionkey);
+            newUser.setCreateTime(new Date());
             
             // 添加到数据库
             int count = userService.insert(newUser);
@@ -76,9 +80,17 @@ public class UserController {
                 return JsonResult.error("插入数据失败");
             }
         }
+        
+        //生成JWTtoken 
+        UserClaims userClaims = new UserClaims();
+        userClaims.setUid(openid);
+        String jwttoken = jwtUtils.createToken(userClaims);
+        //将token存入Redis
+        redis.set(jwttoken, openid, timeout);
+        
         // 封装返回小程序
         Map<String, String> result = new HashMap<>();
-        result.put("session_key", sessionkey);
+        result.put("token", jwttoken);
         result.put("open_id", openid);
         return JsonResult.successs(result);
     }

@@ -64,7 +64,10 @@ auth:
   enable: true
   exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,*.html,/webjars*,/login"
   cors-origin: http://localhost:8080
+  jwtKey: 'jiguiquan'
+  timeout: 1800
   
 upload: 
   basePath: E:\nginx\html\upload
   urlPrefix: http://192.168.0.104/upload/
+  

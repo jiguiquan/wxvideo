@@ -31,7 +31,7 @@ public class FilterConfig {
 	    initParams.put("enabled", enable);
 	    initParams.put("corsOrigin", corsOrigin);
 	    filterRegistrationBean.setInitParameters(initParams);
-	    filterRegistrationBean.addUrlPatterns("/*");
+	    filterRegistrationBean.addUrlPatterns("/admin/*");
 	    return filterRegistrationBean;
 	}
 	
