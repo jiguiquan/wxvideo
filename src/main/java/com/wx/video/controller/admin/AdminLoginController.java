@@ -33,6 +33,7 @@ import com.wx.video.web.AuthorizationFilter;
 
 @Controller
 @CrossOrigin
+@RequestMapping("/admin")
 public class AdminLoginController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AdminLoginController.class);

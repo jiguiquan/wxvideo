@@ -21,8 +21,8 @@ public interface VideoMapper {
     int updateByPrimaryKeySelective(Video record);
 
     int updateByPrimaryKey(Video record);
+    
+	List<VideoDTO> findAll(VideoVo videoVo);
 
 	List<VideoDTO> findVideoPage(VideoPageVo pageable);
-	
-	List<VideoDTO> findAll(VideoVo videoVo);
 }

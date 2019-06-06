@@ -44,6 +44,7 @@ public class AdminVideoController {
     @RequestMapping(value = {"/save", "/insert"}, produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
     public JsonResult save(@RequestBody @Validated Video model) {
         logger.info("新增视频");
+        System.out.println(model);
     	if (StringUtils.isBlank(model.getVid())) {
 			return JsonResult.error("vid不可为空");
 		}

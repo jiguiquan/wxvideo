@@ -6,10 +6,15 @@
     <result column="vtitle" property="vtitle" jdbcType="VARCHAR" />
     <result column="vauthor" property="vauthor" jdbcType="VARCHAR" />
     <result column="vsummary" property="vsummary" jdbcType="VARCHAR" />
+    <result column="vcover" property="vcover" jdbcType="VARCHAR" />
     <result column="vurl" property="vurl" jdbcType="VARCHAR" />
     <result column="vprice" property="vprice" jdbcType="DOUBLE" />
+    <result column="vintegral" property="vintegral" jdbcType="DOUBLE" />
+    <result column="old_price" property="oldPrice" jdbcType="DOUBLE" />
+    <result column="old_integral" property="oldIntegral" jdbcType="DOUBLE" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="heat" property="heat" jdbcType="INTEGER" />
+    <result column="buys" property="buys" jdbcType="INTEGER" />
     <result column="remark" property="remark" jdbcType="VARCHAR" />
     <result column="filter_a" property="filterA" jdbcType="VARCHAR" />
     <result column="filter_b" property="filterB" jdbcType="VARCHAR" />
@@ -17,8 +22,8 @@
     <result column="filter_d" property="filterD" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    vid, vtitle, vauthor, vsummary, vurl, vprice, create_time, heat, remark, filter_a, 
-    filter_b, filter_c, filter_d
+    vid, vtitle, vauthor, vsummary, vcover, vurl, vprice, vintegral, old_price, old_integral, 
+    create_time, heat, buys, remark, filter_a, filter_b, filter_c, filter_d
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -32,15 +37,19 @@
   </delete>
   <insert id="insert" parameterType="com.wx.video.entity.Video" >
     insert into video (vid, vtitle, vauthor, 
-      vsummary, vurl, vprice, 
-      create_time, heat, remark, 
-      filter_a, filter_b, filter_c, 
-      filter_d)
+      vsummary, vcover, vurl, 
+      vprice, vintegral, old_price, 
+      old_integral, create_time, heat, 
+      buys, remark, filter_a, 
+      filter_b, filter_c, filter_d
+      )
     values (#{vid,jdbcType=VARCHAR}, #{vtitle,jdbcType=VARCHAR}, #{vauthor,jdbcType=VARCHAR}, 
-      #{vsummary,jdbcType=VARCHAR}, #{vurl,jdbcType=VARCHAR}, #{vprice,jdbcType=DOUBLE}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{heat,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, 
-      #{filterA,jdbcType=VARCHAR}, #{filterB,jdbcType=VARCHAR}, #{filterC,jdbcType=VARCHAR}, 
-      #{filterD,jdbcType=VARCHAR})
+      #{vsummary,jdbcType=VARCHAR}, #{vcover,jdbcType=VARCHAR}, #{vurl,jdbcType=VARCHAR}, 
+      #{vprice,jdbcType=DOUBLE}, #{vintegral,jdbcType=DOUBLE}, #{oldPrice,jdbcType=DOUBLE}, 
+      #{oldIntegral,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP}, #{heat,jdbcType=INTEGER}, 
+      #{buys,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{filterA,jdbcType=VARCHAR}, 
+      #{filterB,jdbcType=VARCHAR}, #{filterC,jdbcType=VARCHAR}, #{filterD,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wx.video.entity.Video" >
     insert into video
@@ -57,17 +66,32 @@
       <if test="vsummary != null" >
         vsummary,
       </if>
+      <if test="vcover != null" >
+        vcover,
+      </if>
       <if test="vurl != null" >
         vurl,
       </if>
       <if test="vprice != null" >
         vprice,
       </if>
+      <if test="vintegral != null" >
+        vintegral,
+      </if>
+      <if test="oldPrice != null" >
+        old_price,
+      </if>
+      <if test="oldIntegral != null" >
+        old_integral,
+      </if>
       <if test="createTime != null" >
         create_time,
       </if>
       <if test="heat != null" >
         heat,
+      </if>
+      <if test="buys != null" >
+        buys,
       </if>
       <if test="remark != null" >
         remark,
@@ -98,17 +122,32 @@
       <if test="vsummary != null" >
         #{vsummary,jdbcType=VARCHAR},
       </if>
+      <if test="vcover != null" >
+        #{vcover,jdbcType=VARCHAR},
+      </if>
       <if test="vurl != null" >
         #{vurl,jdbcType=VARCHAR},
       </if>
       <if test="vprice != null" >
         #{vprice,jdbcType=DOUBLE},
       </if>
+      <if test="vintegral != null" >
+        #{vintegral,jdbcType=DOUBLE},
+      </if>
+      <if test="oldPrice != null" >
+        #{oldPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="oldIntegral != null" >
+        #{oldIntegral,jdbcType=DOUBLE},
+      </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="heat != null" >
         #{heat,jdbcType=INTEGER},
+      </if>
+      <if test="buys != null" >
+        #{buys,jdbcType=INTEGER},
       </if>
       <if test="remark != null" >
         #{remark,jdbcType=VARCHAR},
@@ -139,17 +178,32 @@
       <if test="vsummary != null" >
         vsummary = #{vsummary,jdbcType=VARCHAR},
       </if>
+      <if test="vcover != null" >
+        vcover = #{vcover,jdbcType=VARCHAR},
+      </if>
       <if test="vurl != null" >
         vurl = #{vurl,jdbcType=VARCHAR},
       </if>
       <if test="vprice != null" >
         vprice = #{vprice,jdbcType=DOUBLE},
       </if>
+      <if test="vintegral != null" >
+        vintegral = #{vintegral,jdbcType=DOUBLE},
+      </if>
+      <if test="oldPrice != null" >
+        old_price = #{oldPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="oldIntegral != null" >
+        old_integral = #{oldIntegral,jdbcType=DOUBLE},
+      </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="heat != null" >
         heat = #{heat,jdbcType=INTEGER},
+      </if>
+      <if test="buys != null" >
+        buys = #{buys,jdbcType=INTEGER},
       </if>
       <if test="remark != null" >
         remark = #{remark,jdbcType=VARCHAR},
@@ -174,10 +228,15 @@
     set vtitle = #{vtitle,jdbcType=VARCHAR},
       vauthor = #{vauthor,jdbcType=VARCHAR},
       vsummary = #{vsummary,jdbcType=VARCHAR},
+      vcover = #{vcover,jdbcType=VARCHAR},
       vurl = #{vurl,jdbcType=VARCHAR},
       vprice = #{vprice,jdbcType=DOUBLE},
+      vintegral = #{vintegral,jdbcType=DOUBLE},
+      old_price = #{oldPrice,jdbcType=DOUBLE},
+      old_integral = #{oldIntegral,jdbcType=DOUBLE},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       heat = #{heat,jdbcType=INTEGER},
+      buys = #{buys,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},
       filter_a = #{filterA,jdbcType=VARCHAR},
       filter_b = #{filterB,jdbcType=VARCHAR},
@@ -185,7 +244,7 @@
       filter_d = #{filterD,jdbcType=VARCHAR}
     where vid = #{vid,jdbcType=VARCHAR}
   </update>
-  
+
   <select id="findVideoPage" parameterType="com.wx.video.model.VideoPageVo" resultType="com.wx.video.dto.VideoDTO">
     select 
       vid, vtitle, vauthor, vsummary, vurl, vprice, create_time as createTime, 
@@ -197,23 +256,23 @@
         and vtitle like CONCAT(CONCAT('%', #{vtitle}),'%')
       </if>
       <if test="filterA != null and filterA != ''">
-      	and filter_a = #{filterA}
+        and filter_a = #{filterA}
       </if>
       <if test="filterB != null and filterB != ''">
-      	and filter_b = #{filterB}
+        and filter_b = #{filterB}
       </if>
       <if test="filterC != null and filterC != ''">
-      	and filter_c = #{filterC}
+        and filter_c = #{filterC}
       </if>
       <if test="filterD != null and filterD != ''">
-      	and filter_d = #{filterD}
+        and filter_d = #{filterD}
       </if>
     </where>
     order by create_time desc
   </select>
   
   <select id="findAll" parameterType="com.wx.video.model.VideoVo" resultType="com.wx.video.dto.VideoDTO">
-  	select 
+    select 
       vid, vtitle, vauthor, vsummary, vurl, vprice, create_time as createTime, 
       heat, remark, filter_a as filterA, filter_b as filterB, 
       filter_c as filterC, filter_d as filterD
@@ -223,16 +282,16 @@
         and vtitle like CONCAT(CONCAT('%', #{vtitle}),'%')
       </if>
       <if test="filterA != null and filterA != ''">
-      	and filter_a = #{filterA}
+        and filter_a = #{filterA}
       </if>
       <if test="filterB != null and filterB != ''">
-      	and filter_b = #{filterB}
+        and filter_b = #{filterB}
       </if>
       <if test="filterC != null and filterC != ''">
-      	and filter_c = #{filterC}
+        and filter_c = #{filterC}
       </if>
       <if test="filterD != null and filterD != ''">
-      	and filter_d = #{filterD}
+        and filter_d = #{filterD}
       </if>
     </where>
     order by create_time desc

@@ -3,25 +3,35 @@ package com.wx.video.entity;
 import java.util.Date;
 
 public class Video {
-    private String vid;  //videoId，必须
+    private String vid;  //videoid
 
-    private String vtitle;   //视频标题
+    private String vtitle;  //标题
 
-    private String vauthor;   //发布人
+    private String vauthor;  //
 
-    private String vsummary;   //摘要
+    private String vsummary;  //简介
 
-    private String vurl;   //url
+    private String vcover;  //
 
-    private Double vprice;   //单价
+    private String vurl;  //视频url
 
-    private Date createTime;   //创建时间
+    private Double vprice;  //价格
 
-    private Integer heat;   //热度
+    private Double vintegral;  //积分价格
 
-    private String remark;   //
+    private Double oldPrice;  //原价格
 
-    private String filterA;   //
+    private Double oldIntegral;  //原积分价格
+
+    private Date createTime;  //
+
+    private Integer heat;  //热度
+
+    private Integer buys;  //已被购买次数
+
+    private String remark;  //
+
+    private String filterA;  //
 
     private String filterB;
 
@@ -61,6 +71,14 @@ public class Video {
         this.vsummary = vsummary;
     }
 
+    public String getVcover() {
+        return vcover;
+    }
+
+    public void setVcover(String vcover) {
+        this.vcover = vcover;
+    }
+
     public String getVurl() {
         return vurl;
     }
@@ -77,6 +95,30 @@ public class Video {
         this.vprice = vprice;
     }
 
+    public Double getVintegral() {
+        return vintegral;
+    }
+
+    public void setVintegral(Double vintegral) {
+        this.vintegral = vintegral;
+    }
+
+    public Double getOldPrice() {
+        return oldPrice;
+    }
+
+    public void setOldPrice(Double oldPrice) {
+        this.oldPrice = oldPrice;
+    }
+
+    public Double getOldIntegral() {
+        return oldIntegral;
+    }
+
+    public void setOldIntegral(Double oldIntegral) {
+        this.oldIntegral = oldIntegral;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -91,6 +133,14 @@ public class Video {
 
     public void setHeat(Integer heat) {
         this.heat = heat;
+    }
+
+    public Integer getBuys() {
+        return buys;
+    }
+
+    public void setBuys(Integer buys) {
+        this.buys = buys;
     }
 
     public String getRemark() {
@@ -132,4 +182,22 @@ public class Video {
     public void setFilterD(String filterD) {
         this.filterD = filterD;
     }
+
+	@Override
+	public String toString() {
+		return "Video [vid=" + vid + ", vtitle=" + vtitle + ", vauthor=" + vauthor + ", vsummary=" + vsummary
+				+ ", vcover=" + vcover + ", vurl=" + vurl + ", vprice=" + vprice + ", vintegral=" + vintegral
+				+ ", oldPrice=" + oldPrice + ", oldIntegral=" + oldIntegral + ", createTime=" + createTime + ", heat="
+				+ heat + ", buys=" + buys + ", remark=" + remark + ", filterA=" + filterA + ", filterB=" + filterB
+				+ ", filterC=" + filterC + ", filterD=" + filterD + ", getVid()=" + getVid() + ", getVtitle()="
+				+ getVtitle() + ", getVauthor()=" + getVauthor() + ", getVsummary()=" + getVsummary() + ", getVcover()="
+				+ getVcover() + ", getVurl()=" + getVurl() + ", getVprice()=" + getVprice() + ", getVintegral()="
+				+ getVintegral() + ", getOldPrice()=" + getOldPrice() + ", getOldIntegral()=" + getOldIntegral()
+				+ ", getCreateTime()=" + getCreateTime() + ", getHeat()=" + getHeat() + ", getBuys()=" + getBuys()
+				+ ", getRemark()=" + getRemark() + ", getFilterA()=" + getFilterA() + ", getFilterB()=" + getFilterB()
+				+ ", getFilterC()=" + getFilterC() + ", getFilterD()=" + getFilterD() + ", getClass()=" + getClass()
+				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+	}
+    
+    
 }
