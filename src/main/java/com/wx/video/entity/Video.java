@@ -3,25 +3,25 @@ package com.wx.video.entity;
 import java.util.Date;
 
 public class Video {
-    private String vid;
+    private String vid;  //videoId，必须
 
-    private String vtitle;
+    private String vtitle;   //视频标题
 
-    private String vauthor;
+    private String vauthor;   //发布人
 
-    private String vsummary;
+    private String vsummary;   //摘要
 
-    private String vurl;
+    private String vurl;   //url
 
-    private Double vprice;
+    private Double vprice;   //单价
 
-    private Date createTime;
+    private Date createTime;   //创建时间
 
-    private Integer heat;
+    private Integer heat;   //热度
 
-    private String remark;
+    private String remark;   //
 
-    private String filterA;
+    private String filterA;   //
 
     private String filterB;
 

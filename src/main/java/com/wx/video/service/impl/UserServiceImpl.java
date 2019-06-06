@@ -18,15 +18,10 @@ public class UserServiceImpl implements UserService {
 		return userMapper.selectByPrimaryKey(id);
 	}
 
-	/**
-	 * 
-	 * @param open_id
-	 * @return
-	 */
 	@Override
-	public User selectByOpenId(String open_id) {
+	public User selectByOpenId(String openid) {
 		// TODO Auto-generated method stub
-		return null;
+		return userMapper.selectByOpenId(openid);
 	}
 
 	/**
@@ -48,7 +43,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public int insert(User newUser) {
 		// TODO Auto-generated method stub
-		return 0;
+		return userMapper.insertSelective(newUser);
 	}
 
 	@Override

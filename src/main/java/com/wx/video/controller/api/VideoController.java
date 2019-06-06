@@ -1,4 +1,10 @@
-package com.wx.video.controller.admin;
+/**   
+ ** 功能描述：
+ * @Package: com.wx.video.controller.api 
+ * @author: jiguiquan   
+ * @date: 2019年6月6日 下午1:58:07 
+ */
+package com.wx.video.controller.api;
 
 import java.util.Date;
 import java.util.List;
@@ -26,83 +32,19 @@ import com.wx.video.entity.Video;
 import com.wx.video.model.VideoPageVo;
 import com.wx.video.model.VideoVo;
 import com.wx.video.service.VideoService;
-import com.wx.video.utils.UploadUtil;
 
+/**
+ * @author jiguiquan
+ *
+ */
 @Controller
 @CrossOrigin
-@RequestMapping("/admin/video")
+@RequestMapping("/api/video")
 public class VideoController {
 	private final static Logger logger = LoggerFactory.getLogger(VideoController.class);
     
     @Autowired
     private VideoService videoService;
-    
-    @Autowired
-	private UploadUtil uploadUtil;
-
-    @ResponseBody
-    @RequestMapping(value = {"/save", "/insert"}, produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
-    public JsonResult save(@RequestBody @Validated Video model) {
-        logger.info("新增视频");
-    	if (StringUtils.isBlank(model.getVid())) {
-			return JsonResult.error("vid不可为空");
-		}
-    	
-    	model.setCreateTime(new Date());
-        
-        try {
-            videoService.save(model);
-        } catch (Exception e) {
-            logger.error("视频信息保存失败！", e);
-            return JsonResult.error("视频信息保存失败！");
-        }
-
-        
-        return JsonResult.successs("添加视频成功");
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/delete/{vid}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
-    public JsonResult delete(@PathVariable("vid") String vid) {
-        logger.info("删除视频，ID:{}", vid);
-        System.out.println(vid);
-        if (vid == null) {
-            return JsonResult.failure("视频ID不可为空！");
-        }
-        
-        Video record = videoService.findById(vid);
-        if (record == null) {
-        	return JsonResult.error("视频不存在，无法删除！");
-		}
-
-        try {
-	            videoService.delete(vid);
-	            return JsonResult.successs("视频删除成功");
-        } catch (Exception e) {
-            logger.error("视频删除失败！", e);
-            return JsonResult.error("视频删除失败！");
-        } 
-    }
-
-    @ResponseBody
-    @RequestMapping(value = "/update", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
-    public JsonResult update(@RequestBody @Validated Video model) {
-        logger.info("更新视频，ID:{}", model.getVid());
-        System.out.println(model);
-        
-        Video record = videoService.findById(model.getVid());
-        if (record == null) {
-			return JsonResult.error("视频不存在");
-		}
-        
-        try {
-	        videoService.update(model);
-	        return JsonResult.successs("视频信息更新成功");
-        } catch (Exception e) {
-            logger.error("视频更新失败！", e);
-            return JsonResult.error("视频更新失败！");
-        }
-    }
 
     @ResponseBody
     @RequestMapping(value = "/{vid}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.GET)
@@ -160,12 +102,5 @@ public class VideoController {
         }
         
         return JsonResult.successs(resultList);
-    }
-    
-    
-    @ResponseBody
-    @RequestMapping(value = "/uploadVideo")
-    public String uploadVideo(@RequestParam("upfile") MultipartFile upfile) {
-    	return uploadUtil.uploadFile(upfile);
     }
 }

@@ -33,9 +33,9 @@ import com.wx.video.web.AuthorizationFilter;
 
 @Controller
 @CrossOrigin
-public class LoginController {
+public class AdminLoginController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminLoginController.class);
 	@Autowired
 	private SysUserService sysUserService;
 	

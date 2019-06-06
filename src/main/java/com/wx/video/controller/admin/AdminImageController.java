@@ -25,8 +25,8 @@ import com.wx.video.utils.UploadUtil;
 @Controller
 @CrossOrigin
 @RequestMapping("/admin/image")
-public class ImageController {
-	private final static Logger logger = LoggerFactory.getLogger(ImageController.class);
+public class AdminImageController {
+	private final static Logger logger = LoggerFactory.getLogger(AdminImageController.class);
     
     @Autowired
     private ImageService imageService;

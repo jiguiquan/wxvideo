@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="uid" property="uid" jdbcType="VARCHAR" />
     <result column="uname" property="uname" jdbcType="VARCHAR" />
-    <result column="ugender" property="ugender" jdbcType="INTEGER" />
+    <result column="ugender" property="ugender" jdbcType="VARCHAR" />
     <result column="uaddress" property="uaddress" jdbcType="VARCHAR" />
     <result column="ubalance" property="ubalance" jdbcType="VARCHAR" />
     <result column="uavatar" property="uavatar" jdbcType="VARCHAR" />
@@ -34,7 +34,7 @@
       uavatar, skey, sessionkey, 
       create_time, update_time)
     values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, 
-      #{ugender,jdbcType=INTEGER}, #{uaddress,jdbcType=VARCHAR}, #{ubalance,jdbcType=VARCHAR}, 
+      #{ugender,jdbcType=VARCHAR}, #{uaddress,jdbcType=VARCHAR}, #{ubalance,jdbcType=VARCHAR}, 
       #{uavatar,jdbcType=VARCHAR}, #{skey,jdbcType=VARCHAR}, #{sessionkey,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -86,7 +86,7 @@
         #{uname,jdbcType=VARCHAR},
       </if>
       <if test="ugender != null" >
-        #{ugender,jdbcType=INTEGER},
+        #{ugender,jdbcType=VARCHAR},
       </if>
       <if test="uaddress != null" >
         #{uaddress,jdbcType=VARCHAR},
@@ -121,7 +121,7 @@
         uname = #{uname,jdbcType=VARCHAR},
       </if>
       <if test="ugender != null" >
-        ugender = #{ugender,jdbcType=INTEGER},
+        ugender = #{ugender,jdbcType=VARCHAR},
       </if>
       <if test="uaddress != null" >
         uaddress = #{uaddress,jdbcType=VARCHAR},
@@ -151,7 +151,7 @@
     update user
     set uid = #{uid,jdbcType=VARCHAR},
       uname = #{uname,jdbcType=VARCHAR},
-      ugender = #{ugender,jdbcType=INTEGER},
+      ugender = #{ugender,jdbcType=VARCHAR},
       uaddress = #{uaddress,jdbcType=VARCHAR},
       ubalance = #{ubalance,jdbcType=VARCHAR},
       uavatar = #{uavatar,jdbcType=VARCHAR},
@@ -161,4 +161,12 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="selectByOpenId" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from user
+    where uid = #{openid,jdbcType=INTEGER}
+    limit 1
+  </select>
 </mapper>

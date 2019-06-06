@@ -9,7 +9,7 @@ public interface UserService {
 	 * @param open_id
 	 * @return
 	 */
-	User selectByOpenId(String open_id);
+	User selectByOpenId(String openid);
 
 	/**
 	 * @param user

@@ -9,7 +9,7 @@ public class User {
 
     private String uname;
 
-    private Integer ugender;
+    private String ugender;
 
     private String uaddress;
 
@@ -49,11 +49,11 @@ public class User {
         this.uname = uname;
     }
 
-    public Integer getUgender() {
+    public String getUgender() {
         return ugender;
     }
 
-    public void setUgender(Integer ugender) {
+    public void setUgender(String ugender) {
         this.ugender = ugender;
     }
 
