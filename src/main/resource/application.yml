@@ -25,7 +25,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/wxvideo?useUnicode=true&characterEncoding=UTF8&useSSL=false
     username: root
-    password: Admin@123
+    password: 123456
     
     initialSize: 5
     minIdle: 5
@@ -68,8 +68,8 @@ auth:
   timeout: 1800
   
 upload: 
-#  basePath: E:\nginx\html\upload
-#  urlPrefix: http://192.168.0.104/upload/
-  basePath: F:\nginx\html\upload
-  urlPrefix: http://172.16.10.84/upload/
+  basePath: E:\nginx\html\upload
+  urlPrefix: http://192.168.0.105/upload/
+#  basePath: F:\nginx\html\upload
+#  urlPrefix: http://172.16.10.84/upload/
   

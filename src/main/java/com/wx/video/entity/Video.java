@@ -3,35 +3,41 @@ package com.wx.video.entity;
 import java.util.Date;
 
 public class Video {
-    private String vid;  //videoid
+    private Integer vid;
 
-    private String vtitle;  //标题
+    private String videoId;
 
-    private String vauthor;  //
+    private String shelf;
 
-    private String vsummary;  //简介
+    private String vtitle;
 
-    private String vcover;  //
+    private String shortName;
 
-    private String vurl;  //视频url
+    private String vauthor;
 
-    private Double vprice;  //价格
+    private String vsmallImg;
 
-    private Double vintegral;  //积分价格
+    private String vcover;
 
-    private Double oldPrice;  //原价格
+    private String vurl;
 
-    private Double oldIntegral;  //原积分价格
+    private Double vprice;
 
-    private Date createTime;  //
+    private Double vintegral;
 
-    private Integer heat;  //热度
+    private Double oldPrice;
 
-    private Integer buys;  //已被购买次数
+    private Double oldIntegral;
 
-    private String remark;  //
+    private Date createTime;
 
-    private String filterA;  //
+    private Integer heat;
+
+    private Integer buys;
+
+    private String remark;
+
+    private String filterA;
 
     private String filterB;
 
@@ -39,12 +45,30 @@ public class Video {
 
     private String filterD;
 
-    public String getVid() {
+    private String vsummary;
+
+    public Integer getVid() {
         return vid;
     }
 
-    public void setVid(String vid) {
+    public void setVid(Integer vid) {
         this.vid = vid;
+    }
+
+    public String getVideoId() {
+        return videoId;
+    }
+
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
+    }
+
+    public String getShelf() {
+        return shelf;
+    }
+
+    public void setShelf(String shelf) {
+        this.shelf = shelf;
     }
 
     public String getVtitle() {
@@ -55,6 +79,14 @@ public class Video {
         this.vtitle = vtitle;
     }
 
+    public String getShortName() {
+        return shortName;
+    }
+
+    public void setShortName(String shortName) {
+        this.shortName = shortName;
+    }
+
     public String getVauthor() {
         return vauthor;
     }
@@ -63,12 +95,12 @@ public class Video {
         this.vauthor = vauthor;
     }
 
-    public String getVsummary() {
-        return vsummary;
+    public String getVsmallImg() {
+        return vsmallImg;
     }
 
-    public void setVsummary(String vsummary) {
-        this.vsummary = vsummary;
+    public void setVsmallImg(String vsmallImg) {
+        this.vsmallImg = vsmallImg;
     }
 
     public String getVcover() {
@@ -183,21 +215,11 @@ public class Video {
         this.filterD = filterD;
     }
 
-	@Override
-	public String toString() {
-		return "Video [vid=" + vid + ", vtitle=" + vtitle + ", vauthor=" + vauthor + ", vsummary=" + vsummary
-				+ ", vcover=" + vcover + ", vurl=" + vurl + ", vprice=" + vprice + ", vintegral=" + vintegral
-				+ ", oldPrice=" + oldPrice + ", oldIntegral=" + oldIntegral + ", createTime=" + createTime + ", heat="
-				+ heat + ", buys=" + buys + ", remark=" + remark + ", filterA=" + filterA + ", filterB=" + filterB
-				+ ", filterC=" + filterC + ", filterD=" + filterD + ", getVid()=" + getVid() + ", getVtitle()="
-				+ getVtitle() + ", getVauthor()=" + getVauthor() + ", getVsummary()=" + getVsummary() + ", getVcover()="
-				+ getVcover() + ", getVurl()=" + getVurl() + ", getVprice()=" + getVprice() + ", getVintegral()="
-				+ getVintegral() + ", getOldPrice()=" + getOldPrice() + ", getOldIntegral()=" + getOldIntegral()
-				+ ", getCreateTime()=" + getCreateTime() + ", getHeat()=" + getHeat() + ", getBuys()=" + getBuys()
-				+ ", getRemark()=" + getRemark() + ", getFilterA()=" + getFilterA() + ", getFilterB()=" + getFilterB()
-				+ ", getFilterC()=" + getFilterC() + ", getFilterD()=" + getFilterD() + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
-	}
-    
-    
+    public String getVsummary() {
+        return vsummary;
+    }
+
+    public void setVsummary(String vsummary) {
+        this.vsummary = vsummary;
+    }
 }

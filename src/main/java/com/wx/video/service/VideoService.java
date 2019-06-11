@@ -11,9 +11,9 @@ public interface VideoService {
 
 	int save(Video record);
 
-	Video findById(String vid);
+	Video findById(Integer id);
 
-	void delete(String vid);
+	void delete(Integer id);
 
 	void update(Video record);
 

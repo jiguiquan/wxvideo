@@ -22,20 +22,20 @@ public class VideoServiceImpl implements VideoService {
 	}
 
 	@Override
-	public Video findById(String vid) {
+	public Video findById(Integer id) {
 		// TODO Auto-generated method stub
-		return videoMapper.selectByPrimaryKey(vid);
+		return videoMapper.selectByPrimaryKey(id);
 	}
 
 	@Override
-	public void delete(String vid) {
-		videoMapper.deleteByPrimaryKey(vid);
+	public void delete(Integer id) {
+		videoMapper.deleteByPrimaryKey(id);
 	}
 
 	@Override
 	public void update(Video record) {
 		// TODO Auto-generated method stub
-		
+		videoMapper.updateByPrimaryKeySelective(record);
 	}
 
 	@Override

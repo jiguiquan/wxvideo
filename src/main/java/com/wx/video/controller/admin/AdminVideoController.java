@@ -45,9 +45,6 @@ public class AdminVideoController {
     public JsonResult save(@RequestBody @Validated Video model) {
         logger.info("新增视频");
         System.out.println(model);
-    	if (StringUtils.isBlank(model.getVid())) {
-			return JsonResult.error("vid不可为空");
-		}
     	
     	model.setCreateTime(new Date());
         
@@ -64,11 +61,11 @@ public class AdminVideoController {
 
     @ResponseBody
     @RequestMapping(value = "/delete/{vid}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
-    public JsonResult delete(@PathVariable("vid") String vid) {
+    public JsonResult delete(@PathVariable("vid") Integer vid) {
         logger.info("删除视频，ID:{}", vid);
         System.out.println(vid);
         if (vid == null) {
-            return JsonResult.failure("视频ID不可为空！");
+            return JsonResult.failure("ID不可为空！");
         }
         
         Video record = videoService.findById(vid);
@@ -107,7 +104,7 @@ public class AdminVideoController {
 
     @ResponseBody
     @RequestMapping(value = "/{vid}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.GET)
-    public JsonResult get(@PathVariable("vid") String vid) {
+    public JsonResult get(@PathVariable("vid") Integer vid) {
         logger.info("查询视频，ID:{}", vid);
 
         Video result = null;
@@ -163,6 +160,23 @@ public class AdminVideoController {
         return JsonResult.successs(resultList);
     }
     
+    @ResponseBody
+    @RequestMapping(value = "/shelf/{id}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.GET)
+    public JsonResult shelf(@PathVariable("id") Integer id) {
+    	Video video = videoService.findById(id);
+    	video.setShelf("Y");
+    	videoService.update(video);
+		return JsonResult.successs("上架成功");
+	}
+    
+    @ResponseBody
+    @RequestMapping(value = "/unShelf/{id}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.GET)
+    public JsonResult unShelf(@PathVariable("id") Integer id) {
+    	Video video = videoService.findById(id);
+    	video.setShelf("N");
+    	videoService.update(video);
+		return JsonResult.successs("下架成功");
+	}
     
     @ResponseBody
     @RequestMapping(value = "/uploadVideo")

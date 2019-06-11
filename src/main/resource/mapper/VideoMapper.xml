@@ -2,10 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wx.video.dao.VideoMapper" >
   <resultMap id="BaseResultMap" type="com.wx.video.entity.Video" >
-    <id column="vid" property="vid" jdbcType="VARCHAR" />
+    <id column="vid" property="vid" jdbcType="INTEGER" />
+    <result column="video_id" property="videoId" jdbcType="VARCHAR" />
+    <result column="shelf" property="shelf" jdbcType="CHAR" />
     <result column="vtitle" property="vtitle" jdbcType="VARCHAR" />
+    <result column="short_name" property="shortName" jdbcType="VARCHAR" />
     <result column="vauthor" property="vauthor" jdbcType="VARCHAR" />
-    <result column="vsummary" property="vsummary" jdbcType="VARCHAR" />
+    <result column="vsmall_img" property="vsmallImg" jdbcType="VARCHAR" />
     <result column="vcover" property="vcover" jdbcType="VARCHAR" />
     <result column="vurl" property="vurl" jdbcType="VARCHAR" />
     <result column="vprice" property="vprice" jdbcType="DOUBLE" />
@@ -21,35 +24,46 @@
     <result column="filter_c" property="filterC" jdbcType="VARCHAR" />
     <result column="filter_d" property="filterD" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.wx.video.entity.Video" extends="BaseResultMap" >
+    <result column="vsummary" property="vsummary" jdbcType="LONGVARCHAR" />
+  </resultMap>
   <sql id="Base_Column_List" >
-    vid, vtitle, vauthor, vsummary, vcover, vurl, vprice, vintegral, old_price, old_integral, 
-    create_time, heat, buys, remark, filter_a, filter_b, filter_c, filter_d
+    vid, video_id, shelf, vtitle, short_name, vauthor, vsmall_img, vcover, vurl, vprice, 
+    vintegral, old_price, old_integral, create_time, heat, buys, remark, filter_a, filter_b, 
+    filter_c, filter_d
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+  <sql id="Blob_Column_List" >
+    vsummary
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
     from video
-    where vid = #{vid,jdbcType=VARCHAR}
+    where vid = #{vid,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from video
-    where vid = #{vid,jdbcType=VARCHAR}
+    where vid = #{vid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wx.video.entity.Video" >
-    insert into video (vid, vtitle, vauthor, 
-      vsummary, vcover, vurl, 
+    insert into video (vid, video_id, shelf, 
+      vtitle, short_name, vauthor, 
+      vsmall_img, vcover, vurl, 
       vprice, vintegral, old_price, 
       old_integral, create_time, heat, 
       buys, remark, filter_a, 
-      filter_b, filter_c, filter_d
-      )
-    values (#{vid,jdbcType=VARCHAR}, #{vtitle,jdbcType=VARCHAR}, #{vauthor,jdbcType=VARCHAR}, 
-      #{vsummary,jdbcType=VARCHAR}, #{vcover,jdbcType=VARCHAR}, #{vurl,jdbcType=VARCHAR}, 
+      filter_b, filter_c, filter_d, 
+      vsummary)
+    values (#{vid,jdbcType=INTEGER}, #{videoId,jdbcType=VARCHAR}, #{shelf,jdbcType=CHAR}, 
+      #{vtitle,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR}, #{vauthor,jdbcType=VARCHAR}, 
+      #{vsmallImg,jdbcType=VARCHAR}, #{vcover,jdbcType=VARCHAR}, #{vurl,jdbcType=VARCHAR}, 
       #{vprice,jdbcType=DOUBLE}, #{vintegral,jdbcType=DOUBLE}, #{oldPrice,jdbcType=DOUBLE}, 
       #{oldIntegral,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP}, #{heat,jdbcType=INTEGER}, 
       #{buys,jdbcType=INTEGER}, #{remark,jdbcType=VARCHAR}, #{filterA,jdbcType=VARCHAR}, 
-      #{filterB,jdbcType=VARCHAR}, #{filterC,jdbcType=VARCHAR}, #{filterD,jdbcType=VARCHAR}
-      )
+      #{filterB,jdbcType=VARCHAR}, #{filterC,jdbcType=VARCHAR}, #{filterD,jdbcType=VARCHAR}, 
+      #{vsummary,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wx.video.entity.Video" >
     insert into video
@@ -57,14 +71,23 @@
       <if test="vid != null" >
         vid,
       </if>
+      <if test="videoId != null" >
+        video_id,
+      </if>
+      <if test="shelf != null" >
+        shelf,
+      </if>
       <if test="vtitle != null" >
         vtitle,
+      </if>
+      <if test="shortName != null" >
+        short_name,
       </if>
       <if test="vauthor != null" >
         vauthor,
       </if>
-      <if test="vsummary != null" >
-        vsummary,
+      <if test="vsmallImg != null" >
+        vsmall_img,
       </if>
       <if test="vcover != null" >
         vcover,
@@ -108,19 +131,31 @@
       <if test="filterD != null" >
         filter_d,
       </if>
+      <if test="vsummary != null" >
+        vsummary,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="vid != null" >
-        #{vid,jdbcType=VARCHAR},
+        #{vid,jdbcType=INTEGER},
+      </if>
+      <if test="videoId != null" >
+        #{videoId,jdbcType=VARCHAR},
+      </if>
+      <if test="shelf != null" >
+        #{shelf,jdbcType=CHAR},
       </if>
       <if test="vtitle != null" >
         #{vtitle,jdbcType=VARCHAR},
       </if>
+      <if test="shortName != null" >
+        #{shortName,jdbcType=VARCHAR},
+      </if>
       <if test="vauthor != null" >
         #{vauthor,jdbcType=VARCHAR},
       </if>
-      <if test="vsummary != null" >
-        #{vsummary,jdbcType=VARCHAR},
+      <if test="vsmallImg != null" >
+        #{vsmallImg,jdbcType=VARCHAR},
       </if>
       <if test="vcover != null" >
         #{vcover,jdbcType=VARCHAR},
@@ -164,19 +199,31 @@
       <if test="filterD != null" >
         #{filterD,jdbcType=VARCHAR},
       </if>
+      <if test="vsummary != null" >
+        #{vsummary,jdbcType=LONGVARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.wx.video.entity.Video" >
     update video
     <set >
+      <if test="videoId != null" >
+        video_id = #{videoId,jdbcType=VARCHAR},
+      </if>
+      <if test="shelf != null" >
+        shelf = #{shelf,jdbcType=CHAR},
+      </if>
       <if test="vtitle != null" >
         vtitle = #{vtitle,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null" >
+        short_name = #{shortName,jdbcType=VARCHAR},
       </if>
       <if test="vauthor != null" >
         vauthor = #{vauthor,jdbcType=VARCHAR},
       </if>
-      <if test="vsummary != null" >
-        vsummary = #{vsummary,jdbcType=VARCHAR},
+      <if test="vsmallImg != null" >
+        vsmall_img = #{vsmallImg,jdbcType=VARCHAR},
       </if>
       <if test="vcover != null" >
         vcover = #{vcover,jdbcType=VARCHAR},
@@ -220,14 +267,45 @@
       <if test="filterD != null" >
         filter_d = #{filterD,jdbcType=VARCHAR},
       </if>
+      <if test="vsummary != null" >
+        vsummary = #{vsummary,jdbcType=LONGVARCHAR},
+      </if>
     </set>
-    where vid = #{vid,jdbcType=VARCHAR}
+    where vid = #{vid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.wx.video.entity.Video" >
+    update video
+    set video_id = #{videoId,jdbcType=VARCHAR},
+      shelf = #{shelf,jdbcType=CHAR},
+      vtitle = #{vtitle,jdbcType=VARCHAR},
+      short_name = #{shortName,jdbcType=VARCHAR},
+      vauthor = #{vauthor,jdbcType=VARCHAR},
+      vsmall_img = #{vsmallImg,jdbcType=VARCHAR},
+      vcover = #{vcover,jdbcType=VARCHAR},
+      vurl = #{vurl,jdbcType=VARCHAR},
+      vprice = #{vprice,jdbcType=DOUBLE},
+      vintegral = #{vintegral,jdbcType=DOUBLE},
+      old_price = #{oldPrice,jdbcType=DOUBLE},
+      old_integral = #{oldIntegral,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      heat = #{heat,jdbcType=INTEGER},
+      buys = #{buys,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      filter_a = #{filterA,jdbcType=VARCHAR},
+      filter_b = #{filterB,jdbcType=VARCHAR},
+      filter_c = #{filterC,jdbcType=VARCHAR},
+      filter_d = #{filterD,jdbcType=VARCHAR},
+      vsummary = #{vsummary,jdbcType=LONGVARCHAR}
+    where vid = #{vid,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wx.video.entity.Video" >
     update video
-    set vtitle = #{vtitle,jdbcType=VARCHAR},
+    set video_id = #{videoId,jdbcType=VARCHAR},
+      shelf = #{shelf,jdbcType=CHAR},
+      vtitle = #{vtitle,jdbcType=VARCHAR},
+      short_name = #{shortName,jdbcType=VARCHAR},
       vauthor = #{vauthor,jdbcType=VARCHAR},
-      vsummary = #{vsummary,jdbcType=VARCHAR},
+      vsmall_img = #{vsmallImg,jdbcType=VARCHAR},
       vcover = #{vcover,jdbcType=VARCHAR},
       vurl = #{vurl,jdbcType=VARCHAR},
       vprice = #{vprice,jdbcType=DOUBLE},
@@ -242,18 +320,21 @@
       filter_b = #{filterB,jdbcType=VARCHAR},
       filter_c = #{filterC,jdbcType=VARCHAR},
       filter_d = #{filterD,jdbcType=VARCHAR}
-    where vid = #{vid,jdbcType=VARCHAR}
+    where vid = #{vid,jdbcType=INTEGER}
   </update>
-
   <select id="findVideoPage" parameterType="com.wx.video.model.VideoPageVo" resultType="com.wx.video.dto.VideoDTO">
     select 
-      vid, vtitle, vauthor, vsummary, vurl, vprice, create_time as createTime, 
-      heat, remark, filter_a as filterA, filter_b as filterB, 
+      vid, video_id as videoId, vtitle, vauthor, vsummary, vcover, vurl, vprice, vintegral, 
+      old_price as oldPrice, old_integral as oldIntegral, create_time as createTime, 
+      heat, buys, remark, shelf, short_name as shortName, vsmall_img as vsmallImg, filter_a as filterA, filter_b as filterB, 
       filter_c as filterC, filter_d as filterD
     from video
     <where>
       <if test="vtitle != null and vtitle != ''">
         and vtitle like CONCAT(CONCAT('%', #{vtitle}),'%')
+      </if>
+      <if test="shelf != null and shelf != ''">
+        and shelf = #{shelf}
       </if>
       <if test="filterA != null and filterA != ''">
         and filter_a = #{filterA}
@@ -273,13 +354,17 @@
   
   <select id="findAll" parameterType="com.wx.video.model.VideoVo" resultType="com.wx.video.dto.VideoDTO">
     select 
-      vid, vtitle, vauthor, vsummary, vurl, vprice, create_time as createTime, 
-      heat, remark, filter_a as filterA, filter_b as filterB, 
+      vid, video_id as videoId, vtitle, vauthor, vsummary, vcover, vurl, vprice, vintegral, 
+      old_price as oldPrice, old_integral as oldIntegral, create_time as createTime, 
+      heat, buys, remark, shelf, short_name as shortName, vsmall_img as vsmallImg, filter_a as filterA, filter_b as filterB, 
       filter_c as filterC, filter_d as filterD
     from video
     <where>
       <if test="vtitle != null and vtitle != ''">
         and vtitle like CONCAT(CONCAT('%', #{vtitle}),'%')
+      </if>
+      <if test="shelf != null and shelf != ''">
+        and shelf = #{shelf}
       </if>
       <if test="filterA != null and filterA != ''">
         and filter_a = #{filterA}

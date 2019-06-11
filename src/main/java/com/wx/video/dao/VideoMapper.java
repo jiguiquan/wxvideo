@@ -10,19 +10,21 @@ import com.wx.video.model.VideoPageVo;
 import com.wx.video.model.VideoVo;
 @Mapper
 public interface VideoMapper {
-    int deleteByPrimaryKey(String vid);
+    int deleteByPrimaryKey(Integer vid);
 
     int insert(Video record);
 
     int insertSelective(Video record);
 
-    Video selectByPrimaryKey(String vid);
+    Video selectByPrimaryKey(Integer vid);
 
     int updateByPrimaryKeySelective(Video record);
 
+    int updateByPrimaryKeyWithBLOBs(Video record);
+
     int updateByPrimaryKey(Video record);
-    
-	List<VideoDTO> findAll(VideoVo videoVo);
+
+    List<VideoDTO> findAll(VideoVo videoVo);
 
 	List<VideoDTO> findVideoPage(VideoPageVo pageable);
 }

@@ -1,7 +1,9 @@
 package com.wx.video.dao;
 
-import com.wx.video.entity.Order;
+import org.apache.ibatis.annotations.Mapper;
 
+import com.wx.video.entity.Order;
+@Mapper
 public interface OrderMapper {
     int deleteByPrimaryKey(Integer oid);
 

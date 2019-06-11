@@ -4,13 +4,15 @@
   <resultMap id="BaseResultMap" type="com.wx.video.entity.Order" >
     <id column="oid" property="oid" jdbcType="INTEGER" />
     <result column="uid" property="uid" jdbcType="INTEGER" />
-    <result column="vid" property="vid" jdbcType="VARCHAR" />
+    <result column="vid" property="vid" jdbcType="INTEGER" />
+    <result column="otype" property="otype" jdbcType="VARCHAR" />
     <result column="oprice" property="oprice" jdbcType="DOUBLE" />
+    <result column="ointegral" property="ointegral" jdbcType="DOUBLE" />
     <result column="otime" property="otime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    oid, uid, vid, oprice, otime, status
+    oid, uid, vid, otype, oprice, ointegral, otime, status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -24,11 +26,11 @@
   </delete>
   <insert id="insert" parameterType="com.wx.video.entity.Order" >
     insert into order (oid, uid, vid, 
-      oprice, otime, status
-      )
-    values (#{oid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{vid,jdbcType=VARCHAR}, 
-      #{oprice,jdbcType=DOUBLE}, #{otime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
-      )
+      otype, oprice, ointegral, 
+      otime, status)
+    values (#{oid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{vid,jdbcType=INTEGER}, 
+      #{otype,jdbcType=VARCHAR}, #{oprice,jdbcType=DOUBLE}, #{ointegral,jdbcType=DOUBLE}, 
+      #{otime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.wx.video.entity.Order" >
     insert into order
@@ -42,8 +44,14 @@
       <if test="vid != null" >
         vid,
       </if>
+      <if test="otype != null" >
+        otype,
+      </if>
       <if test="oprice != null" >
         oprice,
+      </if>
+      <if test="ointegral != null" >
+        ointegral,
       </if>
       <if test="otime != null" >
         otime,
@@ -60,10 +68,16 @@
         #{uid,jdbcType=INTEGER},
       </if>
       <if test="vid != null" >
-        #{vid,jdbcType=VARCHAR},
+        #{vid,jdbcType=INTEGER},
+      </if>
+      <if test="otype != null" >
+        #{otype,jdbcType=VARCHAR},
       </if>
       <if test="oprice != null" >
         #{oprice,jdbcType=DOUBLE},
+      </if>
+      <if test="ointegral != null" >
+        #{ointegral,jdbcType=DOUBLE},
       </if>
       <if test="otime != null" >
         #{otime,jdbcType=TIMESTAMP},
@@ -80,10 +94,16 @@
         uid = #{uid,jdbcType=INTEGER},
       </if>
       <if test="vid != null" >
-        vid = #{vid,jdbcType=VARCHAR},
+        vid = #{vid,jdbcType=INTEGER},
+      </if>
+      <if test="otype != null" >
+        otype = #{otype,jdbcType=VARCHAR},
       </if>
       <if test="oprice != null" >
         oprice = #{oprice,jdbcType=DOUBLE},
+      </if>
+      <if test="ointegral != null" >
+        ointegral = #{ointegral,jdbcType=DOUBLE},
       </if>
       <if test="otime != null" >
         otime = #{otime,jdbcType=TIMESTAMP},
@@ -97,8 +117,10 @@
   <update id="updateByPrimaryKey" parameterType="com.wx.video.entity.Order" >
     update order
     set uid = #{uid,jdbcType=INTEGER},
-      vid = #{vid,jdbcType=VARCHAR},
+      vid = #{vid,jdbcType=INTEGER},
+      otype = #{otype,jdbcType=VARCHAR},
       oprice = #{oprice,jdbcType=DOUBLE},
+      ointegral = #{ointegral,jdbcType=DOUBLE},
       otime = #{otime,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=INTEGER}
     where oid = #{oid,jdbcType=INTEGER}

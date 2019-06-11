@@ -19,6 +19,8 @@ public class VideoPageVo extends Page {
     private String vtitle;  //标题模糊查询 
 
     private Integer heat;  
+    
+    private String shelf;
 
     private String filterA;
 
@@ -27,6 +29,14 @@ public class VideoPageVo extends Page {
     private String filterC;
 
     private String filterD;
+
+	public String getShelf() {
+		return shelf;
+	}
+
+	public void setShelf(String shelf) {
+		this.shelf = shelf;
+	}
 
 	public String getVtitle() {
 		return vtitle;

@@ -15,22 +15,40 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  *
  */
 public class VideoDTO {
-	private String vid;
+	private Integer vid;
+	
+	private String videoId;
 
     private String vtitle;
 
     private String vauthor;
 
     private String vsummary;
+    
+    private String vcover;  //
 
     private String vurl;
+    
+    private String shortName;
+    
+    private String vsmallImg;
 
     private Double vprice;
+    
+    private Double vintegral;  //积分价格
+
+    private Double oldPrice;  //原价格
+
+    private Double oldIntegral;  //原积分价格
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", locale="zh", timezone="GMT+8")
     private Date createTime;
 
     private Integer heat;
+    
+    private Integer buys;  //已被购买次数
+    
+    private String shelf;
 
     private String remark;
 
@@ -41,13 +59,87 @@ public class VideoDTO {
     private String filterC;
 
     private String filterD;
+    
+    
 
-	public String getVid() {
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+
+	public String getVsmallImg() {
+		return vsmallImg;
+	}
+
+	public void setVsmallImg(String vsmallImg) {
+		this.vsmallImg = vsmallImg;
+	}
+
+	public String getShelf() {
+		return shelf;
+	}
+
+	public void setShelf(String shelf) {
+		this.shelf = shelf;
+	}
+
+	public String getVcover() {
+		return vcover;
+	}
+
+	public void setVcover(String vcover) {
+		this.vcover = vcover;
+	}
+
+	public Integer getBuys() {
+		return buys;
+	}
+
+	public void setBuys(Integer buys) {
+		this.buys = buys;
+	}
+
+	public Double getVintegral() {
+		return vintegral;
+	}
+
+	public void setVintegral(Double vintegral) {
+		this.vintegral = vintegral;
+	}
+
+	public Double getOldPrice() {
+		return oldPrice;
+	}
+
+	public void setOldPrice(Double oldPrice) {
+		this.oldPrice = oldPrice;
+	}
+
+	public Double getOldIntegral() {
+		return oldIntegral;
+	}
+
+	public void setOldIntegral(Double oldIntegral) {
+		this.oldIntegral = oldIntegral;
+	}
+
+	public Integer getVid() {
 		return vid;
 	}
 
-	public void setVid(String vid) {
+	public void setVid(Integer vid) {
 		this.vid = vid;
+	}
+
+	public String getVideoId() {
+		return videoId;
+	}
+
+	public void setVideoId(String videoId) {
+		this.videoId = videoId;
 	}
 
 	public String getVtitle() {

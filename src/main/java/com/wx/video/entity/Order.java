@@ -7,9 +7,13 @@ public class Order {
 
     private Integer uid;
 
-    private String vid;
+    private Integer vid;
+
+    private String otype;
 
     private Double oprice;
+
+    private Double ointegral;
 
     private Date otime;
 
@@ -31,12 +35,20 @@ public class Order {
         this.uid = uid;
     }
 
-    public String getVid() {
+    public Integer getVid() {
         return vid;
     }
 
-    public void setVid(String vid) {
+    public void setVid(Integer vid) {
         this.vid = vid;
+    }
+
+    public String getOtype() {
+        return otype;
+    }
+
+    public void setOtype(String otype) {
+        this.otype = otype;
     }
 
     public Double getOprice() {
@@ -45,6 +57,14 @@ public class Order {
 
     public void setOprice(Double oprice) {
         this.oprice = oprice;
+    }
+
+    public Double getOintegral() {
+        return ointegral;
+    }
+
+    public void setOintegral(Double ointegral) {
+        this.ointegral = ointegral;
     }
 
     public Date getOtime() {

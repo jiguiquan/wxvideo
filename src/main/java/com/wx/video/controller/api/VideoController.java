@@ -47,13 +47,13 @@ public class VideoController {
     private VideoService videoService;
 
     @ResponseBody
-    @RequestMapping(value = "/{vid}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.GET)
-    public JsonResult get(@PathVariable("vid") String vid) {
-        logger.info("查询视频，ID:{}", vid);
+    @RequestMapping(value = "/{id}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.GET)
+    public JsonResult get(@PathVariable("id") Integer id) {
+        logger.info("查询视频，ID:{}", id);
 
         Video result = null;
         try {
-            result = videoService.findById(vid);
+            result = videoService.findById(id);
         } catch (Exception e) {
             logger.error("查询视频信息失败！", e);
             return JsonResult.error("查询视频信息失败！");
@@ -93,6 +93,8 @@ public class VideoController {
     public JsonResult findAll(@RequestBody VideoVo videoVo) {
         logger.info("查询全部视频信息");
 
+        videoVo.setShelf("Y");
+        
         List<VideoDTO> resultList = null;
         try {
             resultList = videoService.findAll(videoVo);
