@@ -2,12 +2,16 @@ package com.wx.video.entity;
 
 import java.util.Date;
 
-public class Order {
+public class Vorder {
     private Integer oid;
 
     private Integer uid;
 
+    private String openid;
+
     private Integer vid;
+
+    private String videoId;
 
     private String otype;
 
@@ -17,7 +21,7 @@ public class Order {
 
     private Date otime;
 
-    private Integer status;
+    private String status;
 
     public Integer getOid() {
         return oid;
@@ -35,12 +39,28 @@ public class Order {
         this.uid = uid;
     }
 
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
     public Integer getVid() {
         return vid;
     }
 
     public void setVid(Integer vid) {
         this.vid = vid;
+    }
+
+    public String getVideoId() {
+        return videoId;
+    }
+
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
     }
 
     public String getOtype() {
@@ -75,11 +95,11 @@ public class Order {
         this.otime = otime;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

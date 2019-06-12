@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.wx.video.common.JsonResult;
 import com.wx.video.entity.User;
 import com.wx.video.service.UserService;
@@ -26,6 +28,7 @@ import com.wx.video.utils.RedisOperator;
 import com.wx.video.utils.UserClaims;
 
 import ch.qos.logback.core.subst.Token;
+import io.jsonwebtoken.Claims;
 
 @Controller
 @RequestMapping("/api")
@@ -61,9 +64,8 @@ public class UserController {
         
         // 根据返回的user实体类，判断用户是否是新用户，不是的话，更新最新登录时间，是的话，将用户信息存到数据库
         User user = userService.selectByOpenId(openid);
-
+        System.out.println("查询用户结果"+user);
         if(user != null){
-        	System.out.println("1");
         	user.setUname(map.get("uname").toString());
         	user.setUavatar(map.get("uavatar").toString());
         	user.setUgender(map.get("ugender").toString());
@@ -73,9 +75,8 @@ public class UserController {
             //更新数据库
             userService.update(user);
         }else{
-        	System.out.println("2");
             User newUser = new User();
-            newUser.setUid(openid);
+            newUser.setOpenid(openid);
             newUser.setSessionkey(sessionkey);
             newUser.setUname(map.get("uname").toString());
             newUser.setUavatar(map.get("uavatar").toString());
@@ -88,11 +89,14 @@ public class UserController {
                 return JsonResult.error("插入数据失败");
             }
         }
-        System.out.println("3");
+
+        //获取到当前用户的数据库uid
+        User user1 = userService.selectByOpenId(openid);
         
         //生成JWTtoken 
         UserClaims userClaims = new UserClaims();
-        userClaims.setUid(openid);
+        userClaims.setUid(user1.getUid());
+        userClaims.setOpenid(openid);
         String jwttoken = jwtUtils.createToken(userClaims);
         System.out.println(jwttoken);
         //将token存入Redis
@@ -105,4 +109,21 @@ public class UserController {
         System.out.println(result);
         return JsonResult.successs(result);
     }
+    
+    @PostMapping("/user/getIntegral")
+    @ResponseBody
+    public JsonResult getIntegral(HttpServletRequest request) {
+    	Claims claims = jwtUtils.getUserClaim(request);
+    	System.out.println(claims);
+
+    	String uid = claims.get("uid").toString();
+    	
+    	User user = userService.getUserById(Integer.parseInt(uid));
+    	
+    	if (user == null) {
+			return JsonResult.error("当前用户不存在");
+		}else {
+	    	return JsonResult.successs(user.getUintegral());
+		}
+	}
 }

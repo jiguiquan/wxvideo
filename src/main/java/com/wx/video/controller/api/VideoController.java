@@ -9,6 +9,8 @@ package com.wx.video.controller.api;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,9 @@ import com.wx.video.entity.Video;
 import com.wx.video.model.VideoPageVo;
 import com.wx.video.model.VideoVo;
 import com.wx.video.service.VideoService;
+import com.wx.video.utils.JwtUtils;
+
+import io.jsonwebtoken.Claims;
 
 /**
  * @author jiguiquan
@@ -45,6 +50,8 @@ public class VideoController {
     
     @Autowired
     private VideoService videoService;
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @ResponseBody
     @RequestMapping(value = "/{id}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.GET)
@@ -105,4 +112,19 @@ public class VideoController {
         
         return JsonResult.successs(resultList);
     }
+    
+    //查询我的已购课程
+    @ResponseBody
+    @RequestMapping(value = "myBought", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.POST)
+    public JsonResult myBought(HttpServletRequest request) {
+    	Claims claims = jwtUtils.getUserClaim(request);
+    	System.out.println(claims);
+    	String uid = claims.get("uid").toString();
+    	String openid = claims.get("openid").toString();
+    	
+    	List<VideoDTO> list = videoService.myBought(Integer.parseInt(uid));
+		return JsonResult.successs(list);
+	}
+    
+    
 }

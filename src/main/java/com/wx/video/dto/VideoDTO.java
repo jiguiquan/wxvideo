@@ -59,8 +59,6 @@ public class VideoDTO {
     private String filterC;
 
     private String filterD;
-    
-    
 
 	public String getShortName() {
 		return shortName;

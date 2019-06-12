@@ -381,4 +381,33 @@
     </where>
     order by create_time desc
   </select>
+  
+  <select id="myBought" parameterType="java.lang.Integer" resultType="com.wx.video.dto.VideoDTO">
+  	select 
+      vid, video_id as videoId, vtitle, vauthor, vsummary, vcover, vurl, vprice, vintegral, 
+      old_price as oldPrice, old_integral as oldIntegral, create_time as createTime, 
+      heat, buys, remark, shelf, short_name as shortName, vsmall_img as vsmallImg, filter_a as filterA, filter_b as filterB, 
+      filter_c as filterC, filter_d as filterD
+    from video
+    where vid in (
+    	select 
+	      vid
+	    from vorder
+	    where uid = #{uid,jdbcType=INTEGER} and status = "1"
+	    order by otime desc
+    )
+  </select>
+  
+  <select id="myWatchRecord" parameterType="java.lang.Integer" resultType="com.wx.video.dto.VideoDTO">
+  	select 
+      v.vid, v.video_id as videoId, v.vtitle, v.vauthor, v.vsummary, v.vcover, v.vurl, v.vprice, v.vintegral, 
+      v.old_price as oldPrice, v.old_integral as oldIntegral, v.create_time as createTime, 
+      v.heat, v.buys, v.remark, v.shelf, v.short_name as shortName, v.vsmall_img as vsmallImg, 
+      v.filter_a as filterA, v.filter_b as filterB, 
+      v.filter_c as filterC, v.filter_d as filterD
+    from video v
+      right join watch_record wr on v.vid = wr.vid
+    where uid = #{uid,jdbcType=INTEGER}
+    order by wr.watch_time desc
+  </select>
 </mapper>

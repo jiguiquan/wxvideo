@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.wx.video.dao.UserMapper" >
   <resultMap id="BaseResultMap" type="com.wx.video.entity.User" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="uid" property="uid" jdbcType="VARCHAR" />
+    <id column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
     <result column="uname" property="uname" jdbcType="VARCHAR" />
-    <result column="ugender" property="ugender" jdbcType="VARCHAR" />
+    <result column="ugender" property="ugender" jdbcType="CHAR" />
     <result column="uaddress" property="uaddress" jdbcType="VARCHAR" />
-    <result column="ubalance" property="ubalance" jdbcType="VARCHAR" />
+    <result column="uintegral" property="uintegral" jdbcType="DOUBLE" />
     <result column="uavatar" property="uavatar" jdbcType="VARCHAR" />
     <result column="skey" property="skey" jdbcType="VARCHAR" />
     <result column="sessionkey" property="sessionkey" jdbcType="VARCHAR" />
@@ -15,37 +15,37 @@
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, uid, uname, ugender, uaddress, ubalance, uavatar, skey, sessionkey, create_time, 
+    uid, openid, uname, ugender, uaddress, uintegral, uavatar, skey, sessionkey, create_time, 
     update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from user
-    where id = #{id,jdbcType=INTEGER}
+    where uid = #{uid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from user
-    where id = #{id,jdbcType=INTEGER}
+    where uid = #{uid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wx.video.entity.User" >
-    insert into user (id, uid, uname, 
-      ugender, uaddress, ubalance, 
+    insert into user (uid, openid, uname, 
+      ugender, uaddress, uintegral, 
       uavatar, skey, sessionkey, 
       create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{uid,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, 
-      #{ugender,jdbcType=VARCHAR}, #{uaddress,jdbcType=VARCHAR}, #{ubalance,jdbcType=VARCHAR}, 
+    values (#{uid,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, 
+      #{ugender,jdbcType=CHAR}, #{uaddress,jdbcType=VARCHAR}, #{uintegral,jdbcType=DOUBLE}, 
       #{uavatar,jdbcType=VARCHAR}, #{skey,jdbcType=VARCHAR}, #{sessionkey,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.wx.video.entity.User" >
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
       <if test="uid != null" >
         uid,
+      </if>
+      <if test="openid != null" >
+        openid,
       </if>
       <if test="uname != null" >
         uname,
@@ -56,8 +56,8 @@
       <if test="uaddress != null" >
         uaddress,
       </if>
-      <if test="ubalance != null" >
-        ubalance,
+      <if test="uintegral != null" >
+        uintegral,
       </if>
       <if test="uavatar != null" >
         uavatar,
@@ -76,23 +76,23 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
       <if test="uid != null" >
-        #{uid,jdbcType=VARCHAR},
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
       </if>
       <if test="uname != null" >
         #{uname,jdbcType=VARCHAR},
       </if>
       <if test="ugender != null" >
-        #{ugender,jdbcType=VARCHAR},
+        #{ugender,jdbcType=CHAR},
       </if>
       <if test="uaddress != null" >
         #{uaddress,jdbcType=VARCHAR},
       </if>
-      <if test="ubalance != null" >
-        #{ubalance,jdbcType=VARCHAR},
+      <if test="uintegral != null" >
+        #{uintegral,jdbcType=DOUBLE},
       </if>
       <if test="uavatar != null" >
         #{uavatar,jdbcType=VARCHAR},
@@ -114,20 +114,20 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.wx.video.entity.User" >
     update user
     <set >
-      <if test="uid != null" >
-        uid = #{uid,jdbcType=VARCHAR},
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=VARCHAR},
       </if>
       <if test="uname != null" >
         uname = #{uname,jdbcType=VARCHAR},
       </if>
       <if test="ugender != null" >
-        ugender = #{ugender,jdbcType=VARCHAR},
+        ugender = #{ugender,jdbcType=CHAR},
       </if>
       <if test="uaddress != null" >
         uaddress = #{uaddress,jdbcType=VARCHAR},
       </if>
-      <if test="ubalance != null" >
-        ubalance = #{ubalance,jdbcType=VARCHAR},
+      <if test="uintegral != null" >
+        uintegral = #{uintegral,jdbcType=DOUBLE},
       </if>
       <if test="uavatar != null" >
         uavatar = #{uavatar,jdbcType=VARCHAR},
@@ -145,28 +145,27 @@
         update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where uid = #{uid,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wx.video.entity.User" >
     update user
-    set uid = #{uid,jdbcType=VARCHAR},
+    set openid = #{openid,jdbcType=VARCHAR},
       uname = #{uname,jdbcType=VARCHAR},
-      ugender = #{ugender,jdbcType=VARCHAR},
+      ugender = #{ugender,jdbcType=CHAR},
       uaddress = #{uaddress,jdbcType=VARCHAR},
-      ubalance = #{ubalance,jdbcType=VARCHAR},
+      uintegral = #{uintegral,jdbcType=DOUBLE},
       uavatar = #{uavatar,jdbcType=VARCHAR},
       skey = #{skey,jdbcType=VARCHAR},
       sessionkey = #{sessionkey,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP}
-    where id = #{id,jdbcType=INTEGER}
+    where uid = #{uid,jdbcType=INTEGER}
   </update>
-  
   <select id="selectByOpenId" resultMap="BaseResultMap">
-  	select 
+    select 
     <include refid="Base_Column_List" />
     from user
-    where uid = #{openid,jdbcType=INTEGER}
+    where openid = #{openid,jdbcType=INTEGER}
     limit 1
   </select>
 </mapper>

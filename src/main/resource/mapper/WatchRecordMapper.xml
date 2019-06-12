@@ -3,7 +3,10 @@
 <mapper namespace="com.wx.video.dao.WatchRecordMapper" >
   <resultMap id="BaseResultMap" type="com.wx.video.entity.WatchRecord" >
     <id column="wid" property="wid" jdbcType="INTEGER" />
-    <result column="vid" property="vid" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
+    <result column="vid" property="vid" jdbcType="INTEGER" />
+    <result column="video_id" property="videoId" jdbcType="VARCHAR" />
     <result column="vtitle" property="vtitle" jdbcType="VARCHAR" />
     <result column="vurl" property="vurl" jdbcType="VARCHAR" />
     <result column="watch_time" property="watchTime" jdbcType="TIMESTAMP" />
@@ -11,7 +14,7 @@
     <result column="remark" property="remark" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    wid, vid, vtitle, vurl, watch_time, spare, remark
+    wid, uid, openid, vid, video_id, vtitle, vurl, watch_time, spare, remark
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -24,10 +27,12 @@
     where wid = #{wid,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.wx.video.entity.WatchRecord" >
-    insert into watch_record (wid, vid, vtitle, 
+    insert into watch_record (wid, uid, openid, 
+      vid, video_id, vtitle, 
       vurl, watch_time, spare, 
       remark)
-    values (#{wid,jdbcType=INTEGER}, #{vid,jdbcType=VARCHAR}, #{vtitle,jdbcType=VARCHAR}, 
+    values (#{wid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, 
+      #{vid,jdbcType=INTEGER}, #{videoId,jdbcType=VARCHAR}, #{vtitle,jdbcType=VARCHAR}, 
       #{vurl,jdbcType=VARCHAR}, #{watchTime,jdbcType=TIMESTAMP}, #{spare,jdbcType=VARCHAR}, 
       #{remark,jdbcType=VARCHAR})
   </insert>
@@ -37,8 +42,17 @@
       <if test="wid != null" >
         wid,
       </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="openid != null" >
+        openid,
+      </if>
       <if test="vid != null" >
         vid,
+      </if>
+      <if test="videoId != null" >
+        video_id,
       </if>
       <if test="vtitle != null" >
         vtitle,
@@ -60,8 +74,17 @@
       <if test="wid != null" >
         #{wid,jdbcType=INTEGER},
       </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
       <if test="vid != null" >
-        #{vid,jdbcType=VARCHAR},
+        #{vid,jdbcType=INTEGER},
+      </if>
+      <if test="videoId != null" >
+        #{videoId,jdbcType=VARCHAR},
       </if>
       <if test="vtitle != null" >
         #{vtitle,jdbcType=VARCHAR},
@@ -83,8 +106,17 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.wx.video.entity.WatchRecord" >
     update watch_record
     <set >
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
       <if test="vid != null" >
-        vid = #{vid,jdbcType=VARCHAR},
+        vid = #{vid,jdbcType=INTEGER},
+      </if>
+      <if test="videoId != null" >
+        video_id = #{videoId,jdbcType=VARCHAR},
       </if>
       <if test="vtitle != null" >
         vtitle = #{vtitle,jdbcType=VARCHAR},
@@ -106,7 +138,10 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.wx.video.entity.WatchRecord" >
     update watch_record
-    set vid = #{vid,jdbcType=VARCHAR},
+    set uid = #{uid,jdbcType=INTEGER},
+      openid = #{openid,jdbcType=VARCHAR},
+      vid = #{vid,jdbcType=INTEGER},
+      video_id = #{videoId,jdbcType=VARCHAR},
       vtitle = #{vtitle,jdbcType=VARCHAR},
       vurl = #{vurl,jdbcType=VARCHAR},
       watch_time = #{watchTime,jdbcType=TIMESTAMP},
@@ -114,4 +149,26 @@
       remark = #{remark,jdbcType=VARCHAR}
     where wid = #{wid,jdbcType=INTEGER}
   </update>
+  
+  <select id="myWatchRecord" parameterType="com.wx.video.model.WatchRecordVo" resultType="com.wx.video.dto.WatchRecordDTO">
+  	select
+  	  v.vid, v.video_id as videoId, v.vtitle, v.vauthor, v.vsummary, 
+  	  v.vcover, v.vurl, v.short_name as shortName, v.vsmall_img as vsmallImg, 
+  	  v.vprice, v.vintegral, v.old_price as oldPrice, v.old_integral as oldIntegral, 
+  	  v.create_time as createTime, v.heat, v.buys, wr.watch_time as watchTime
+  	from watch_record wr
+  	left join video v on  wr.vid = v.vid
+  	<where>
+  	  <if test="uid != null">
+  	  	and uid = #{uid, jdbcType=INTEGER}
+  	  </if>
+  	  <if test="startTime != null">
+          <![CDATA[   and DATE_FORMAT(wr.watch_time, '%Y-%m-%d') >= DATE_FORMAT(#{startTime}, '%Y-%m-%d')  ]]>
+      </if>
+      <if test="endTime != null">
+          <![CDATA[   and DATE_FORMAT(wr.watch_time, '%Y-%m-%d') < DATE_FORMAT(#{endTime}, '%Y-%m-%d')  ]]>
+      </if>
+  	</where>
+  	order by wr.watch_time desc
+  </select>
 </mapper>

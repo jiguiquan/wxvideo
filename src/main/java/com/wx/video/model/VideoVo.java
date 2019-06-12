@@ -6,6 +6,8 @@
  */
 package com.wx.video.model;
 
+import java.util.Date;
+
 /**
  * @author jiguiquan
  *

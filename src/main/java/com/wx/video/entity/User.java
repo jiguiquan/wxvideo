@@ -3,9 +3,9 @@ package com.wx.video.entity;
 import java.util.Date;
 
 public class User {
-    private Integer id;
+    private Integer uid;
 
-    private String uid;
+    private String openid;
 
     private String uname;
 
@@ -13,7 +13,7 @@ public class User {
 
     private String uaddress;
 
-    private String ubalance;
+    private Double uintegral;
 
     private String uavatar;
 
@@ -25,20 +25,20 @@ public class User {
 
     private Date updateTime;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUid() {
+    public Integer getUid() {
         return uid;
     }
 
-    public void setUid(String uid) {
+    public void setUid(Integer uid) {
         this.uid = uid;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
     }
 
     public String getUname() {
@@ -65,12 +65,12 @@ public class User {
         this.uaddress = uaddress;
     }
 
-    public String getUbalance() {
-        return ubalance;
+    public Double getUintegral() {
+        return uintegral;
     }
 
-    public void setUbalance(String ubalance) {
-        this.ubalance = ubalance;
+    public void setUintegral(Double uintegral) {
+        this.uintegral = uintegral;
     }
 
     public String getUavatar() {
@@ -112,4 +112,12 @@ public class User {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
+
+	@Override
+	public String toString() {
+		return "User [uid=" + uid + ", openid=" + openid + ", uname=" + uname + ", ugender=" + ugender + ", uaddress="
+				+ uaddress + ", uintegral=" + uintegral + ", uavatar=" + uavatar + ", skey=" + skey + ", sessionkey="
+				+ sessionkey + ", createTime=" + createTime + ", updateTime=" + updateTime + "]";
+	}
+    
 }

@@ -14,15 +14,26 @@ import io.jsonwebtoken.impl.JwtMap;
 public class UserClaims extends JwtMap implements Claims {
     private String grantType = "password";
 
-    private String uid;
+    private Integer uid;
     
-	public String getUid() {
+    private String openid;
+    
+	public Integer getUid() {
 		return uid;
 	}
 
-	public void setUid(String uid) {
+	public void setUid(Integer uid) {
 		this.uid = uid;
 		setValue("uid", uid);
+	}
+	
+	public String getOpenid() {
+		return openid;
+	}
+
+	public void setOpenid(String openid) {
+		this.openid = openid;
+		setValue("openid", openid);
 	}
 
     public String getGrantType() {

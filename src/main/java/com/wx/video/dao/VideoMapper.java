@@ -27,4 +27,8 @@ public interface VideoMapper {
     List<VideoDTO> findAll(VideoVo videoVo);
 
 	List<VideoDTO> findVideoPage(VideoPageVo pageable);
+
+	List<VideoDTO> myBought(Integer uid);
+
+	List<VideoDTO> myWatchRecord(Integer uid);
 }

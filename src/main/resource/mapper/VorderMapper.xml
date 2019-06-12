@@ -1,39 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.wx.video.dao.OrderMapper" >
-  <resultMap id="BaseResultMap" type="com.wx.video.entity.Order" >
+<mapper namespace="com.wx.video.dao.VorderMapper" >
+  <resultMap id="BaseResultMap" type="com.wx.video.entity.Vorder" >
     <id column="oid" property="oid" jdbcType="INTEGER" />
     <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="openid" property="openid" jdbcType="VARCHAR" />
     <result column="vid" property="vid" jdbcType="INTEGER" />
+    <result column="video_id" property="videoId" jdbcType="VARCHAR" />
     <result column="otype" property="otype" jdbcType="VARCHAR" />
     <result column="oprice" property="oprice" jdbcType="DOUBLE" />
     <result column="ointegral" property="ointegral" jdbcType="DOUBLE" />
     <result column="otime" property="otime" jdbcType="TIMESTAMP" />
-    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="CHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    oid, uid, vid, otype, oprice, ointegral, otime, status
+    oid, uid, openid, vid, video_id, otype, oprice, ointegral, otime, status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
-    from order
+    from vorder
     where oid = #{oid,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-    delete from order
+    delete from vorder
     where oid = #{oid,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.wx.video.entity.Order" >
-    insert into order (oid, uid, vid, 
-      otype, oprice, ointegral, 
-      otime, status)
-    values (#{oid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{vid,jdbcType=INTEGER}, 
-      #{otype,jdbcType=VARCHAR}, #{oprice,jdbcType=DOUBLE}, #{ointegral,jdbcType=DOUBLE}, 
-      #{otime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.wx.video.entity.Vorder" >
+    insert into vorder (oid, uid, openid, 
+      vid, video_id, otype, 
+      oprice, ointegral, otime, 
+      status)
+    values (#{oid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, 
+      #{vid,jdbcType=INTEGER}, #{videoId,jdbcType=VARCHAR}, #{otype,jdbcType=VARCHAR}, 
+      #{oprice,jdbcType=DOUBLE}, #{ointegral,jdbcType=DOUBLE}, #{otime,jdbcType=TIMESTAMP}, 
+      #{status,jdbcType=CHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.wx.video.entity.Order" >
-    insert into order
+  <insert id="insertSelective" parameterType="com.wx.video.entity.Vorder" >
+    insert into vorder
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="oid != null" >
         oid,
@@ -41,8 +45,14 @@
       <if test="uid != null" >
         uid,
       </if>
+      <if test="openid != null" >
+        openid,
+      </if>
       <if test="vid != null" >
         vid,
+      </if>
+      <if test="videoId != null" >
+        video_id,
       </if>
       <if test="otype != null" >
         otype,
@@ -67,8 +77,14 @@
       <if test="uid != null" >
         #{uid,jdbcType=INTEGER},
       </if>
+      <if test="openid != null" >
+        #{openid,jdbcType=VARCHAR},
+      </if>
       <if test="vid != null" >
         #{vid,jdbcType=INTEGER},
+      </if>
+      <if test="videoId != null" >
+        #{videoId,jdbcType=VARCHAR},
       </if>
       <if test="otype != null" >
         #{otype,jdbcType=VARCHAR},
@@ -83,18 +99,24 @@
         #{otime,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null" >
-        #{status,jdbcType=INTEGER},
+        #{status,jdbcType=CHAR},
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.wx.video.entity.Order" >
-    update order
+  <update id="updateByPrimaryKeySelective" parameterType="com.wx.video.entity.Vorder" >
+    update vorder
     <set >
       <if test="uid != null" >
         uid = #{uid,jdbcType=INTEGER},
       </if>
+      <if test="openid != null" >
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
       <if test="vid != null" >
         vid = #{vid,jdbcType=INTEGER},
+      </if>
+      <if test="videoId != null" >
+        video_id = #{videoId,jdbcType=VARCHAR},
       </if>
       <if test="otype != null" >
         otype = #{otype,jdbcType=VARCHAR},
@@ -109,20 +131,37 @@
         otime = #{otime,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null" >
-        status = #{status,jdbcType=INTEGER},
+        status = #{status,jdbcType=CHAR},
       </if>
     </set>
     where oid = #{oid,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.wx.video.entity.Order" >
-    update order
+  <update id="updateByPrimaryKey" parameterType="com.wx.video.entity.Vorder" >
+    update vorder
     set uid = #{uid,jdbcType=INTEGER},
+      openid = #{openid,jdbcType=VARCHAR},
       vid = #{vid,jdbcType=INTEGER},
+      video_id = #{videoId,jdbcType=VARCHAR},
       otype = #{otype,jdbcType=VARCHAR},
       oprice = #{oprice,jdbcType=DOUBLE},
       ointegral = #{ointegral,jdbcType=DOUBLE},
       otime = #{otime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=INTEGER}
+      status = #{status,jdbcType=CHAR}
     where oid = #{oid,jdbcType=INTEGER}
   </update>
+  
+  <select id="myOrder" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from vorder
+    where uid = #{uid,jdbcType=INTEGER} and status = "1"
+    order by otime desc
+  </select>
+  
+  <select id="myOrderVidList" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+  	select 
+      vid
+    from vorder
+    where uid = #{uid,jdbcType=INTEGER} and status = "1"
+  </select>
 </mapper>

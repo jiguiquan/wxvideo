@@ -5,7 +5,13 @@ import java.util.Date;
 public class WatchRecord {
     private Integer wid;
 
-    private String vid;
+    private Integer uid;
+
+    private String openid;
+
+    private Integer vid;
+
+    private String videoId;
 
     private String vtitle;
 
@@ -25,12 +31,36 @@ public class WatchRecord {
         this.wid = wid;
     }
 
-    public String getVid() {
+    public Integer getUid() {
+        return uid;
+    }
+
+    public void setUid(Integer uid) {
+        this.uid = uid;
+    }
+
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
+    public Integer getVid() {
         return vid;
     }
 
-    public void setVid(String vid) {
+    public void setVid(Integer vid) {
         this.vid = vid;
+    }
+
+    public String getVideoId() {
+        return videoId;
+    }
+
+    public void setVideoId(String videoId) {
+        this.videoId = videoId;
     }
 
     public String getVtitle() {

@@ -50,4 +50,26 @@ public class VideoServiceImpl implements VideoService {
 		return videoMapper.findVideoPage(pageable);
 	}
 
+	/**
+	 * 
+	 * @param uid
+	 * @return
+	 */
+	@Override
+	public List<VideoDTO> myBought(Integer uid) {
+		// TODO Auto-generated method stub
+		return videoMapper.myBought(uid);
+	}
+
+	/**
+	 * 
+	 * @param uid
+	 * @return
+	 */
+	@Override
+	public List<VideoDTO> myWatchRecord(Integer uid) {
+		// TODO Auto-generated method stub
+		return videoMapper.myWatchRecord(uid);
+	}
+
 }
