@@ -72,4 +72,15 @@ public class VideoServiceImpl implements VideoService {
 		return videoMapper.myWatchRecord(uid);
 	}
 
+	/**
+	 * 
+	 * @param vid
+	 * @return
+	 */
+	@Override
+	public VideoDTO detail(Integer vid, Integer uid) {
+		// TODO Auto-generated method stub
+		return videoMapper.detail(vid, uid);
+	}
+
 }

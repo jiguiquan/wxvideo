@@ -410,4 +410,20 @@
     where uid = #{uid,jdbcType=INTEGER}
     order by wr.watch_time desc
   </select>
+  
+  <select id="detail" resultType="com.wx.video.dto.VideoDTO">
+  	select 
+  	  vid, video_id as videoId, vtitle, vauthor, vsummary, vcover, vurl, vprice, vintegral, 
+      old_price as oldPrice, old_integral as oldIntegral, create_time as createTime, 
+      heat, buys, (
+      	case when (
+      	  select count(*) from vorder where uid = #{uid} and vid = #{vid} and status = "1"
+      	  ) &gt; 0 then "Y"
+      	else "N" end
+      ) as remark, shelf, short_name as shortName, vsmall_img as vsmallImg, 
+      filter_a as filterA, filter_b as filterB, 
+      filter_c as filterC, filter_d as filterD
+    from video
+      where vid = #{vid}
+  </select>
 </mapper>

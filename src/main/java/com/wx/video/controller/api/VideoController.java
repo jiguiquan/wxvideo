@@ -126,5 +126,25 @@ public class VideoController {
 		return JsonResult.successs(list);
 	}
     
-    
+    @ResponseBody
+    @RequestMapping(value = "detail/{vid}", produces = { "application/json;charset=UTF-8" }, method = RequestMethod.GET)
+    public JsonResult detail(@PathVariable("vid") Integer vid, HttpServletRequest request) {
+        logger.info("查询视频，ID:{}", vid);
+        
+        Claims claims = jwtUtils.getUserClaim(request);
+    	System.out.println(claims);
+    	String uid = claims.get("uid").toString();
+    	String openid = claims.get("openid").toString();
+
+
+        VideoDTO result = null;
+        try {
+            result = videoService.detail(vid, Integer.parseInt(uid));
+        } catch (Exception e) {
+            logger.error("查询视频信息失败！", e);
+            return JsonResult.error("查询视频信息失败！");
+        }
+
+        return JsonResult.successs(result);
+    }
 }

@@ -3,6 +3,7 @@ package com.wx.video.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.wx.video.dto.VideoDTO;
 import com.wx.video.entity.Video;
@@ -31,4 +32,6 @@ public interface VideoMapper {
 	List<VideoDTO> myBought(Integer uid);
 
 	List<VideoDTO> myWatchRecord(Integer uid);
+
+	VideoDTO detail(@Param("vid") Integer vid, @Param("uid") Integer uid);
 }

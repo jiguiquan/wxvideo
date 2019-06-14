@@ -25,4 +25,6 @@ public interface VideoService {
 
 	List<VideoDTO> myWatchRecord(Integer uid);
 
+	VideoDTO detail(Integer vid, Integer uid);
+
 }

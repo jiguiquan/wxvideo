@@ -1,7 +1,11 @@
 package com.wx.video.controller.api;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -22,6 +26,9 @@ import com.wx.video.entity.Vorder;
 import com.wx.video.service.UserService;
 import com.wx.video.service.VorderService;
 import com.wx.video.utils.JwtUtils;
+import com.wx.video.wxpay.sdk.MyConfig;
+import com.wx.video.wxpay.sdk.WXPay;
+import com.wx.video.wxpay.sdk.WXPayUtil;
 
 import io.jsonwebtoken.Claims;
 
@@ -102,5 +109,95 @@ private final static Logger logger = LoggerFactory.getLogger(VorderController.cl
 	}
     
     
-    
+    /**
+     * 微信统一下单接口
+     * @return
+     */
+    @RequestMapping(value = "/doUnifiedOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult doUnifiedOrder(HttpServletRequest request) {
+    	System.out.println("这里");
+        Map resultMap=new HashMap();
+        
+        Claims claims = jwtUtils.getUserClaim(request);
+    	System.out.println(claims);
+    	String uid = claims.get("uid").toString();
+    	String openid = claims.get("openid").toString();
+    	
+//    	String openid = "oxm6Q4uwLuB_cUQrO6FTLEE-r4qk";
+    	
+        MyConfig config = null;
+        WXPay wxpay =null;
+        try {
+            config = new MyConfig();
+            wxpay= new WXPay(config);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //生成的随机字符串
+        String nonce_str = WXPayUtil.generateNonceStr();
+        //获取客户端的ip地址
+        //获取本机的ip地址
+        InetAddress addr = null;
+        try {
+            addr = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        String spbill_create_ip = addr.getHostAddress();
+        //支付金额，需要转成字符串类型，否则后面的签名会失败
+        int  total_fee=1;
+        //商品描述
+        String body = "chefeizhifu";
+        //商户订单号
+        String out_trade_no= WXPayUtil.generateNonceStr();
+        
+        System.out.println("=====输出检验====");
+        System.out.println(nonce_str);
+        System.out.println(out_trade_no);
+        System.out.println(spbill_create_ip);
+        System.out.println(openid);
+        
+        //统一下单接口参数
+        HashMap<String, String> data = new HashMap<String, String>();
+        data.put("appid", "wx0fb11492cabd2544");
+        data.put("mch_id", "1536427101");
+        data.put("nonce_str", nonce_str);
+        data.put("body", body);
+        data.put("out_trade_no",out_trade_no);
+        data.put("total_fee", String.valueOf(total_fee));
+        data.put("spbill_create_ip", spbill_create_ip);
+        data.put("notify_url", "http://47.99.48.242");
+        data.put("trade_type","JSAPI");
+        data.put("openid", openid);
+        try {
+            Map<String, String> rMap = wxpay.unifiedOrder(data);
+            System.out.println("统一下单接口返回: " + rMap);
+            String return_code = (String) rMap.get("return_code");
+            String result_code = (String) rMap.get("result_code");
+            String nonceStr = WXPayUtil.generateNonceStr();
+            resultMap.put("nonceStr", nonceStr);
+            Long timeStamp = System.currentTimeMillis() / 1000;
+            if ("SUCCESS".equals(return_code) && return_code.equals(result_code)) {
+                String prepayid = rMap.get("prepay_id");
+                resultMap.put("package", "prepay_id="+prepayid);
+                resultMap.put("signType", "MD5");
+                //这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
+                resultMap.put("timeStamp", timeStamp + "");
+                //再次签名，这个签名用于小程序端调用wx.requesetPayment方法
+                resultMap.put("appId","wx0fb11492cabd2544");
+                String sign = WXPayUtil.generateSignature(resultMap, "xKLPpyJOORlkVmu1dujovptx1PuxqqIx");
+                resultMap.put("paySign", sign);
+                System.out.println("生成的签名paySign : "+ sign);
+                
+                System.out.println("返回结果为"+resultMap);
+                return JsonResult.successs(resultMap);
+            }else{
+                return  JsonResult.error("失败了");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return  JsonResult.error("出错了");
+        }
+    }
 }
