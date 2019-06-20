@@ -22,4 +22,6 @@ public interface VorderMapper {
 	List<Vorder> myOrder(Integer uid);
 
 	List<Integer> myOrderVidList(Integer uid);
+
+	Vorder getOrderByTradeNo(String tradeNo);
 }

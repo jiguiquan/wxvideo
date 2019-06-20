@@ -23,6 +23,14 @@ public class Vorder {
 
     private String status;
 
+    private String outTradeNo;
+
+    private String transactionId;
+
+    private Date timeEnd;
+
+    private String description;
+
     public Integer getOid() {
         return oid;
     }
@@ -102,4 +110,45 @@ public class Vorder {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getOutTradeNo() {
+        return outTradeNo;
+    }
+
+    public void setOutTradeNo(String outTradeNo) {
+        this.outTradeNo = outTradeNo;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public Date getTimeEnd() {
+        return timeEnd;
+    }
+
+    public void setTimeEnd(Date timeEnd) {
+        this.timeEnd = timeEnd;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+	@Override
+	public String toString() {
+		return "Vorder [oid=" + oid + ", uid=" + uid + ", openid=" + openid + ", vid=" + vid + ", videoId=" + videoId
+				+ ", otype=" + otype + ", oprice=" + oprice + ", ointegral=" + ointegral + ", otime=" + otime
+				+ ", status=" + status + ", outTradeNo=" + outTradeNo + ", transactionId=" + transactionId
+				+ ", timeEnd=" + timeEnd + ", description=" + description + "]";
+	}
+    
 }

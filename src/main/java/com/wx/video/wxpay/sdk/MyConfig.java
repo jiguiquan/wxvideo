@@ -3,7 +3,11 @@ package com.wx.video.wxpay.sdk;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.ClassPathResource;
 
 /**   
  ** 功能描述：自定义的微信支付配置类
@@ -16,14 +20,26 @@ public class MyConfig extends WXPayConfig {
 	private byte[] certData;
 	
     public MyConfig() throws Exception {
-//        String certPath = "classpath:apiclient_cert.p12";
-        String path = "apiclient_cert.p12";
-        File file = new File(this.getClass().getClassLoader().getResource(path).getFile());
-//        File file = new File(certPath);
-        InputStream certStream = new FileInputStream(file);
-        this.certData = new byte[(int) file.length()];
-        certStream.read(this.certData);
-        certStream.close();
+////        String certPath = "classpath:apiclient_cert.p12";
+//        String path = "apiclient_cert.p12";
+//        File file = new File(this.getClass().getClassLoader().getResource(path).getFile());
+////        File file = new File(certPath);
+//        InputStream certStream = new FileInputStream(file);
+////        InputStream inputStream = new ClassPathResource("apiclient_cert.p12").getInputStream();
+//        this.certData = new byte[(int) file.length()];
+//        certStream.read(this.certData);
+//        certStream.close();
+    	
+    	try {
+            ClassPathResource classPathResource = new ClassPathResource("apiclient_cert.p12");
+            //获取文件流
+            InputStream certStream = classPathResource.getInputStream();
+            this.certData = IOUtils.toByteArray(certStream);
+            certStream.read(this.certData);
+            certStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //我的appid

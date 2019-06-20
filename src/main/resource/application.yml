@@ -1,9 +1,14 @@
 server:
-  port: 8080
+  port: 443
+#  port: 8080
   servlet:
     context-path: /wxvideo
     session:
-      timeout: 1800    
+      timeout: 1800
+  ssl:
+    key-store: classpath:2373213_www.wenchuangshixuan.com.pfx
+    key-store-password: 442wThb6
+    keyStoreType: PKCS12
       
 spring: 
   application: 
@@ -26,7 +31,9 @@ spring:
     url: jdbc:mysql://localhost:3306/wxvideo?useUnicode=true&characterEncoding=UTF8&useSSL=false
     username: root
 #    password: 123456
-    password: Admin@123
+#    password: Admin@123
+#    password: root
+    password: wcsx@#$123456
     
     initialSize: 5
     minIdle: 5
@@ -61,7 +68,7 @@ logging:
   level:
      com.wx.video.dao: debug
      
-auth:
+auth: 
   enable: true
   exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,*.html,/webjars*,/admin/login"
   cors-origin: http://localhost:8080

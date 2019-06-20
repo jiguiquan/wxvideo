@@ -71,4 +71,10 @@ public class VorderServiceImpl implements VorderService {
 		return vorderMapper.myOrderVidList(uid);
 	}
 
+	@Override
+	public Vorder getOrderByTradeNo(String tradeNo) {
+		// TODO Auto-generated method stub
+		return vorderMapper.getOrderByTradeNo(tradeNo);
+	}
+
 }

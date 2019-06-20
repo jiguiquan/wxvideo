@@ -2,6 +2,7 @@ package com.wx.video.controller.api;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.wx.video.common.JsonResult;
 import com.wx.video.entity.User;
 import com.wx.video.service.UserService;
+import com.wx.video.service.VorderService;
 import com.wx.video.utils.HttpClientUtil;
 import com.wx.video.utils.JwtUtils;
 import com.wx.video.utils.RedisOperator;
@@ -35,6 +37,8 @@ import io.jsonwebtoken.Claims;
 public class UserController {
 	@Autowired
     private UserService userService;
+	@Autowired
+	private VorderService vorderService;
 	@Autowired
 	private JwtUtils jwtUtils;
 	@Autowired
@@ -110,9 +114,9 @@ public class UserController {
         return JsonResult.successs(result);
     }
     
-    @PostMapping("/user/getIntegral")
+    @PostMapping("/user/getIntegral/{vid}")
     @ResponseBody
-    public JsonResult getIntegral(HttpServletRequest request) {
+    public JsonResult getIntegral(@PathVariable("vid") Integer vid, HttpServletRequest request) {
     	Claims claims = jwtUtils.getUserClaim(request);
     	System.out.println(claims);
 
@@ -122,8 +126,23 @@ public class UserController {
     	
     	if (user == null) {
 			return JsonResult.error("当前用户不存在");
-		}else {
-	    	return JsonResult.successs(user.getUintegral());
 		}
+    	
+    	//2、判断是否重复购买
+    	List<Integer> list = vorderService.myOrderVidList(Integer.parseInt(uid));
+    	System.out.println(list);
+    	
+    	String isBuy = null;
+    	if (list.contains(vid)) {
+			isBuy = "Y";
+		}else {
+			isBuy = "N";
+		}
+    	
+    	Map<String, Object> resultMap = new HashMap<>();
+    	resultMap.put("isBuy", isBuy);
+    	resultMap.put("uintegral", user.getUintegral());
+    	
+	    return JsonResult.successs(resultMap);
 	}
 }

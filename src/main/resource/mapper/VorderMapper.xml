@@ -12,9 +12,14 @@
     <result column="ointegral" property="ointegral" jdbcType="DOUBLE" />
     <result column="otime" property="otime" jdbcType="TIMESTAMP" />
     <result column="status" property="status" jdbcType="CHAR" />
+    <result column="out_trade_no" property="outTradeNo" jdbcType="VARCHAR" />
+    <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
+    <result column="time_end" property="timeEnd" jdbcType="TIMESTAMP" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    oid, uid, openid, vid, video_id, otype, oprice, ointegral, otime, status
+    oid, uid, openid, vid, video_id, otype, oprice, ointegral, otime, status, out_trade_no, 
+    transaction_id, time_end, description
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -30,11 +35,13 @@
     insert into vorder (oid, uid, openid, 
       vid, video_id, otype, 
       oprice, ointegral, otime, 
-      status)
+      status, out_trade_no, transaction_id, 
+      time_end, description)
     values (#{oid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, 
       #{vid,jdbcType=INTEGER}, #{videoId,jdbcType=VARCHAR}, #{otype,jdbcType=VARCHAR}, 
       #{oprice,jdbcType=DOUBLE}, #{ointegral,jdbcType=DOUBLE}, #{otime,jdbcType=TIMESTAMP}, 
-      #{status,jdbcType=CHAR})
+      #{status,jdbcType=CHAR}, #{outTradeNo,jdbcType=VARCHAR}, #{transactionId,jdbcType=VARCHAR}, 
+      #{timeEnd,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.wx.video.entity.Vorder" >
     insert into vorder
@@ -69,6 +76,18 @@
       <if test="status != null" >
         status,
       </if>
+      <if test="outTradeNo != null" >
+        out_trade_no,
+      </if>
+      <if test="transactionId != null" >
+        transaction_id,
+      </if>
+      <if test="timeEnd != null" >
+        time_end,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="oid != null" >
@@ -100,6 +119,18 @@
       </if>
       <if test="status != null" >
         #{status,jdbcType=CHAR},
+      </if>
+      <if test="outTradeNo != null" >
+        #{outTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionId != null" >
+        #{transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="timeEnd != null" >
+        #{timeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -133,6 +164,18 @@
       <if test="status != null" >
         status = #{status,jdbcType=CHAR},
       </if>
+      <if test="outTradeNo != null" >
+        out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionId != null" >
+        transaction_id = #{transactionId,jdbcType=VARCHAR},
+      </if>
+      <if test="timeEnd != null" >
+        time_end = #{timeEnd,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
     </set>
     where oid = #{oid,jdbcType=INTEGER}
   </update>
@@ -146,12 +189,15 @@
       oprice = #{oprice,jdbcType=DOUBLE},
       ointegral = #{ointegral,jdbcType=DOUBLE},
       otime = #{otime,jdbcType=TIMESTAMP},
-      status = #{status,jdbcType=CHAR}
+      status = #{status,jdbcType=CHAR},
+      out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
+      transaction_id = #{transactionId,jdbcType=VARCHAR},
+      time_end = #{timeEnd,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR}
     where oid = #{oid,jdbcType=INTEGER}
   </update>
-  
   <select id="myOrder" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-  	select 
+    select 
     <include refid="Base_Column_List" />
     from vorder
     where uid = #{uid,jdbcType=INTEGER} and status = "1"
@@ -159,9 +205,17 @@
   </select>
   
   <select id="myOrderVidList" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-  	select 
+    select 
       vid
     from vorder
     where uid = #{uid,jdbcType=INTEGER} and status = "1"
+  </select>
+  
+  <select id="getOrderByTradeNo">
+  	select 
+    <include refid="Base_Column_List" />
+    from vorder
+    where out_trade_no = #{tradeNo, jdbcType=VARCHAR}
+    limit 1
   </select>
 </mapper>

@@ -21,4 +21,6 @@ public interface VorderService {
 
 	List<Integer> myOrderVidList(Integer uid);
 
+	Vorder getOrderByTradeNo(String tradeNo);
+
 }
