@@ -31,6 +31,8 @@ public class Vorder {
 
     private String description;
 
+    private String prepayId;
+
     public Integer getOid() {
         return oid;
     }
@@ -143,12 +145,11 @@ public class Vorder {
         this.description = description;
     }
 
-	@Override
-	public String toString() {
-		return "Vorder [oid=" + oid + ", uid=" + uid + ", openid=" + openid + ", vid=" + vid + ", videoId=" + videoId
-				+ ", otype=" + otype + ", oprice=" + oprice + ", ointegral=" + ointegral + ", otime=" + otime
-				+ ", status=" + status + ", outTradeNo=" + outTradeNo + ", transactionId=" + transactionId
-				+ ", timeEnd=" + timeEnd + ", description=" + description + "]";
-	}
-    
+    public String getPrepayId() {
+        return prepayId;
+    }
+
+    public void setPrepayId(String prepayId) {
+        this.prepayId = prepayId;
+    }
 }

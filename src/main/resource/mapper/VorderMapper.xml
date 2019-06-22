@@ -16,10 +16,11 @@
     <result column="transaction_id" property="transactionId" jdbcType="VARCHAR" />
     <result column="time_end" property="timeEnd" jdbcType="TIMESTAMP" />
     <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="prepay_id" property="prepayId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     oid, uid, openid, vid, video_id, otype, oprice, ointegral, otime, status, out_trade_no, 
-    transaction_id, time_end, description
+    transaction_id, time_end, description, prepay_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -36,12 +37,14 @@
       vid, video_id, otype, 
       oprice, ointegral, otime, 
       status, out_trade_no, transaction_id, 
-      time_end, description)
+      time_end, description, prepay_id
+      )
     values (#{oid,jdbcType=INTEGER}, #{uid,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, 
       #{vid,jdbcType=INTEGER}, #{videoId,jdbcType=VARCHAR}, #{otype,jdbcType=VARCHAR}, 
       #{oprice,jdbcType=DOUBLE}, #{ointegral,jdbcType=DOUBLE}, #{otime,jdbcType=TIMESTAMP}, 
       #{status,jdbcType=CHAR}, #{outTradeNo,jdbcType=VARCHAR}, #{transactionId,jdbcType=VARCHAR}, 
-      #{timeEnd,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR})
+      #{timeEnd,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}, #{prepayId,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.wx.video.entity.Vorder" >
     insert into vorder
@@ -88,6 +91,9 @@
       <if test="description != null" >
         description,
       </if>
+      <if test="prepayId != null" >
+        prepay_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="oid != null" >
@@ -131,6 +137,9 @@
       </if>
       <if test="description != null" >
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="prepayId != null" >
+        #{prepayId,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -176,6 +185,9 @@
       <if test="description != null" >
         description = #{description,jdbcType=VARCHAR},
       </if>
+      <if test="prepayId != null" >
+        prepay_id = #{prepayId,jdbcType=VARCHAR},
+      </if>
     </set>
     where oid = #{oid,jdbcType=INTEGER}
   </update>
@@ -193,7 +205,8 @@
       out_trade_no = #{outTradeNo,jdbcType=VARCHAR},
       transaction_id = #{transactionId,jdbcType=VARCHAR},
       time_end = #{timeEnd,jdbcType=TIMESTAMP},
-      description = #{description,jdbcType=VARCHAR}
+      description = #{description,jdbcType=VARCHAR},
+      prepay_id = #{prepayId,jdbcType=VARCHAR}
     where oid = #{oid,jdbcType=INTEGER}
   </update>
   <select id="myOrder" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -211,7 +224,7 @@
     where uid = #{uid,jdbcType=INTEGER} and status = "1"
   </select>
   
-  <select id="getOrderByTradeNo">
+  <select id="getOrderByTradeNo" resultMap="BaseResultMap" parameterType="String">
   	select 
     <include refid="Base_Column_List" />
     from vorder

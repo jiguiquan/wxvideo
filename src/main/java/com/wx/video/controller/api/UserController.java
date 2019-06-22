@@ -110,6 +110,7 @@ public class UserController {
         Map<String, String> result = new HashMap<>();
         result.put("token", jwttoken);
         result.put("open_id", openid);
+        result.put("access_token", sessionkey);
         System.out.println(result);
         return JsonResult.successs(result);
     }
