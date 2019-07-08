@@ -1,18 +1,27 @@
 server:
-#  port: 443
-  port: 8080
+  port: 443
+#  port: 8080
   servlet:
     context-path: /wxvideo
     session:
       timeout: 1800
-#  ssl:
-#    key-store: classpath:2373213_www.wenchuangshixuan.com.pfx
-#    key-store-password: 442wThb6
-#    keyStoreType: PKCS12
+  ssl:
+    key-store: classpath:2373213_www.wenchuangshixuan.com.pfx
+    key-store-password: 442wThb6
+    keyStoreType: PKCS12
       
 spring: 
   application: 
     name: wxvideo
+    
+  thymeleaf:
+    cache: false
+    prefix: classpath:/
+    suffix: .html
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    mode: HTML
   
   servlet:
     multipart:
@@ -31,9 +40,9 @@ spring:
     url: jdbc:mysql://localhost:3306/wxvideo?useUnicode=true&characterEncoding=UTF8&useSSL=false
     username: root
 #    password: 123456
-    password: Admin@123
+#    password: Admin@123
 #    password: root
-#    password: wcsx@#$123456
+    password: wcsx@#$123456
     
     initialSize: 5
     minIdle: 5
@@ -71,13 +80,13 @@ logging:
 auth: 
   enable: true
   exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,*.html,/webjars*,/admin/login"
-  cors-origin: http://localhost:8080
+  cors-origin: https://www.wenchuangshixuan.com
   jwtKey: 'jiguiquan'
   timeout: 1800
   
 upload: 
-#  basePath: /var/www/html/upload
-#  urlPrefix: http://47.99.48.242/upload/
-  basePath: F:\nginx\html\upload
-  urlPrefix: http://172.16.10.84/upload/
+  basePath: /var/www/html/upload
+  urlPrefix: http://47.99.48.242/upload/
+#  basePath: F:\nginx\html\upload
+#  urlPrefix: http://172.16.10.84/upload/
   
