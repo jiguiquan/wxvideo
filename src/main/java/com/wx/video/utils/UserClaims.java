@@ -1,16 +1,10 @@
 package com.wx.video.utils;
 
 import java.util.Date;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.RequiredTypeException;
 import io.jsonwebtoken.impl.JwtMap;
 
-/**
- ** JWT用户信息对象
- * @author jiguiquan
- *
- */
 public class UserClaims extends JwtMap implements Claims {
     private String grantType = "password";
 
@@ -146,5 +140,4 @@ public class UserClaims extends JwtMap implements Claims {
 
         return requiredType.cast(value);
     }
-
 }
