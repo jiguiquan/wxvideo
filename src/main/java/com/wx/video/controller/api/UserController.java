@@ -146,4 +146,24 @@ public class UserController {
     	
 	    return JsonResult.successs(resultMap);
 	}
+    
+    @PostMapping("/user/getIntegral")
+    @ResponseBody
+    public JsonResult getIntegral(HttpServletRequest request) {
+    	Claims claims = jwtUtils.getUserClaim(request);
+    	System.out.println(claims);
+
+    	String uid = claims.get("uid").toString();
+    	
+    	User user = userService.getUserById(Integer.parseInt(uid));
+    	
+    	if (user == null) {
+			return JsonResult.error("当前用户不存在");
+		}
+    	
+    	Map<String, Object> resultMap = new HashMap<>();
+    	resultMap.put("uintegral", user.getUintegral());
+    	
+	    return JsonResult.successs(resultMap);
+	}
 }

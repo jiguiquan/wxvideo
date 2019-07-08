@@ -28,6 +28,7 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -49,6 +50,7 @@ import com.wx.video.service.UserService;
 import com.wx.video.service.VorderService;
 import com.wx.video.utils.HttpClientUtil;
 import com.wx.video.utils.JwtUtils;
+import com.wx.video.utils.RedisOperator;
 import com.wx.video.wxpay.sdk.MyConfig;
 import com.wx.video.wxpay.sdk.WXPay;
 import com.wx.video.wxpay.sdk.WXPayUtil;
@@ -73,6 +75,8 @@ public class VorderController {
 	private UserService userService;
 	@Autowired
 	private JwtUtils jwtUtils;
+	@Autowired
+	private RedisOperator redis;
 
 	@ResponseBody
 	@RequestMapping(value = { "/save", "/insert" }, produces = {
@@ -306,6 +310,7 @@ public class VorderController {
 				record.setTimeEnd(new Date());
 				record.setTransactionId(notifyMap.get("transaction_id"));
 				vorderService.update(record);
+				System.out.println("更新数据库完成");
 				// 业务处理结束
 
 				// 发送一次模板消息
@@ -313,8 +318,11 @@ public class VorderController {
 				String openid = notifyMap.get("openid");
 				String formid = record.getPrepayId();
 				User user = userService.selectByOpenId(openid);
-				String accesstoken = user.getSessionkey();
-
+				
+				String accesstoken = redis.get("accessToken");
+				System.out.println("redis获取到的accesstoken为"+accesstoken);
+				
+				
 				// 重点是构建data
 				Map<String, TempData> data = new HashMap<>();
 				TempData keyword1 = new TempData();
@@ -345,6 +353,7 @@ public class VorderController {
 				System.out.println(template);
 				String url = "https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token="
 						+ accesstoken;
+				System.out.println("url为"+url);
 
 				push(url, template);
 				// 发送模板消息完成
@@ -383,6 +392,25 @@ public class VorderController {
 				e.printStackTrace();
 			}
 		}
-
+	}
+	
+	//获取accesstoken的接口
+	@Scheduled(fixedDelay = 7200 * 1000)
+	public void getAccessToken() {
+		System.out.println("这里");
+		Map<String, String> param = new HashMap<>();
+        param.put("grant_type", "client_credential");
+        param.put("appid", "wx0fb11492cabd2544");
+        param.put("secret", "5c5e5efae8b303170018081b2b53976b");
+        
+        String url = "https://api.weixin.qq.com/cgi-bin/token";
+        String wxResult = HttpClientUtil.doGet(url, param);
+        
+        JSONObject jsonObject = JSONObject.parseObject(wxResult);
+        System.out.println("调用accessToken的返回值为"+jsonObject);
+        // 获取参数返回的
+        String accessToken = jsonObject.get("access_token").toString();
+        System.out.println("设置redis"+accessToken);
+        redis.set("accessToken", accessToken);
 	}
 }
