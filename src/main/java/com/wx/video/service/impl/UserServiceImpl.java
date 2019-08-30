@@ -51,6 +51,13 @@ public class UserServiceImpl implements UserService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void addIntegral(String open_id, Double integral) {
+		User user = selectByOpenId(open_id);
+		user.setUintegral(user.getUintegral() + integral);
+		update(user);
+	}
 	
 	
 }

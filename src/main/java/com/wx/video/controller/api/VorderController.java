@@ -294,7 +294,6 @@ public class VorderController {
 		try {
 			notifyMap = WXPayUtil.xmlToMap(resXml);
 		} catch (Exception e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -311,6 +310,18 @@ public class VorderController {
 				record.setTransactionId(notifyMap.get("transaction_id"));
 				vorderService.update(record);
 				System.out.println("更新数据库完成");
+				
+				//给此用户增加积分
+				String open_id = record.getOpenid();
+				Integer total_fee = Integer.valueOf(notifyMap.get("total_fee"));  //单位为分
+				Double integral = (double) (total_fee/10);
+				System.out.println(open_id);
+				System.out.println(total_fee);
+				System.out.println(integral);
+				
+				userService.addIntegral(open_id, integral);
+				System.out.println("为用户增加积分成功");
+				
 				// 业务处理结束
 
 				// 发送一次模板消息
@@ -369,7 +380,6 @@ public class VorderController {
 		try {
 			response.getWriter().write(resXml);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -388,7 +398,6 @@ public class VorderController {
 			try {
 				throw new Exception("模版消息发送失败\n" + wxResult);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

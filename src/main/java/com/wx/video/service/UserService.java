@@ -23,4 +23,6 @@ public interface UserService {
 	int insert(User newUser);
 
 	User findUserByLoginName(String loginName);
+
+	void addIntegral(String open_id, Double integral);
 }
