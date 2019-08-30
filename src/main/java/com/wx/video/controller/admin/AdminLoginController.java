@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +40,12 @@ public class AdminLoginController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminLoginController.class);
 	@Autowired
 	private SysUserService sysUserService;
+	
+	@GetMapping("/index")
+	public String index() {
+		System.out.println("111");
+		return "test";
+	}
 	
 	@ResponseBody
     @RequestMapping(value = "/login", method = RequestMethod.POST)
